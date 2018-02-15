@@ -1,0 +1,40 @@
+entity Contest {
+	createDate Instant required
+	name String required
+	logo ImageBlob 
+    uuid String required
+    startDate LocalDate required
+	endDate LocalDate required
+    price BigDecimal required
+    script TextBlob required
+    notes String maxlength(1024) 
+}
+
+entity Application {
+	createDate Instant required
+    name String required
+    lastname String required
+    email String required
+    originalRecord Blob required
+    notes String
+    originalRecordLocation String
+    convertedRecordLocation String 
+	status ApplicationState required
+    
+}
+
+enum ApplicationState {
+	IN_PROCESS, CONVERTED
+}
+
+relationship ManyToOne {
+	Contest{user(login) required} to User
+}
+
+relationship OneToMany {
+	Contest{application} to Application{contest}
+}
+
+paginate * with pagination
+
+service * with serviceImpl
