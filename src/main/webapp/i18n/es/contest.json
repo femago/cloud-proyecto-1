@@ -2,28 +2,28 @@
     "cloiceApp": {
         "contest" : {
             "home": {
-                "title": "Contests",
-                "createLabel": "Crear nuevo Contest",
-                "createOrEditLabel": "Crear o editar Contest"
+                "title": "Concursos",
+                "createLabel": "Crear nuevo Concurso",
+                "createOrEditLabel": "Crear o editar Concurso"
             },
-            "created": "Un nuevo Contest ha sido creado con el identificador {{ param }}",
-            "updated": "Un Contest ha sido actualizado con el identificador {{ param }}",
-            "deleted": "Un Contest ha sido eliminado con el identificador {{ param }}",
+            "created": "Un nuevo Concurso ha sido creado con el identificador {{ param }}",
+            "updated": "Un Concurso ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Concurso ha sido eliminado con el identificador {{ param }}",
             "delete": {
-                "question": "¿Seguro que quiere eliminar Contest {{ id }}?"
+                "question": "¿Seguro que quiere eliminar el Concurso {{ id }}?"
             },
             "detail": {
-                "title": "Contest"
+                "title": "Concurso"
             },
-            "createDate": "Create Date",
-            "name": "Name",
+            "createDate": "Creación",
+            "name": "Nombre",
             "logo": "Logo",
-            "uuid": "Uuid",
-            "startDate": "Start Date",
-            "endDate": "End Date",
-            "price": "Price",
+            "uuid": "URL",
+            "startDate": "Fecha Inicio",
+            "endDate": "Fecha Fin",
+            "price": "Pago",
             "script": "Script",
-            "notes": "Notes",
+            "notes": "Notas",
             "application": "Application",
             "user": "User"
         }

@@ -24,9 +24,6 @@
             <th jhiSortBy="startDate"><span jhiTranslate="cloiceApp.contest.startDate">Start Date</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="endDate"><span jhiTranslate="cloiceApp.contest.endDate">End Date</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="price"><span jhiTranslate="cloiceApp.contest.price">Price</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="script"><span jhiTranslate="cloiceApp.contest.script">Script</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="notes"><span jhiTranslate="cloiceApp.contest.notes">Notes</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="user.login"><span jhiTranslate="cloiceApp.contest.user">User</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -45,11 +42,6 @@
                 <td>{{contest.startDate | date:'mediumDate'}}</td>
                 <td>{{contest.endDate | date:'mediumDate'}}</td>
                 <td>{{contest.price}}</td>
-                <td>{{contest.script}}</td>
-                <td>{{contest.notes}}</td>
-                <td>
-                    {{contest.user?.login}}
-                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

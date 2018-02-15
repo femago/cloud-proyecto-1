@@ -26,7 +26,6 @@ public class Contest implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Column(name = "create_date", nullable = false)
     private Instant createDate;
 
@@ -42,7 +41,7 @@ public class Contest implements Serializable {
     private String logoContentType;
 
     @NotNull
-    @Column(name = "uuid", nullable = false)
+    @Column(name = "uuid", nullable = false, unique = true)
     private String uuid;
 
     @NotNull
@@ -71,7 +70,6 @@ public class Contest implements Serializable {
     private Set<Application> applications = new HashSet<>();
 
     @ManyToOne(optional = false)
-    @NotNull
     private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
