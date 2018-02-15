@@ -1,5 +1,8 @@
 package co.edu.uniandes.cloud.service.impl;
 
+import co.edu.uniandes.cloud.domain.User;
+import co.edu.uniandes.cloud.repository.UserRepository;
+import co.edu.uniandes.cloud.security.SecurityUtils;
 import co.edu.uniandes.cloud.service.ContestService;
 import co.edu.uniandes.cloud.domain.Contest;
 import co.edu.uniandes.cloud.repository.ContestRepository;
@@ -9,6 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.Optional;
 
 
 /**
@@ -21,9 +27,11 @@ public class ContestServiceImpl implements ContestService {
     private final Logger log = LoggerFactory.getLogger(ContestServiceImpl.class);
 
     private final ContestRepository contestRepository;
+    private final UserRepository userRepository;
 
-    public ContestServiceImpl(ContestRepository contestRepository) {
+    public ContestServiceImpl(ContestRepository contestRepository, UserRepository userRepository) {
         this.contestRepository = contestRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -34,6 +42,9 @@ public class ContestServiceImpl implements ContestService {
      */
     @Override
     public Contest save(Contest contest) {
+        contest.setCreateDate(Instant.now());
+        Optional<User> oneByLogin = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get());
+        contest.setUser(oneByLogin.get());
         log.debug("Request to save Contest : {}", contest);
         return contestRepository.save(contest);
     }
