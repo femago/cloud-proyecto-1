@@ -85,4 +85,10 @@ public class ContestServiceImpl implements ContestService {
         log.debug("Request to delete Contest : {}", id);
         contestRepository.delete(id);
     }
+
+    @Override
+    public Page<Contest> findByCurrentUser(Pageable pageable) {
+        log.debug("Request to get all Contest by User");
+        return contestRepository.findByUserIsCurrentUser(pageable);
+    }
 }
