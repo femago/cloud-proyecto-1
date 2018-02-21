@@ -19,7 +19,7 @@
             "name": "Nombres",
             "lastname": "Apellidos",
             "email": "Email",
-            "originalRecord": "Original Record",
+            "originalRecord": "Voz Original",
             "notes": "Notas",
             "originalRecordLocation": "Original Record Location",
             "convertedRecordLocation": "Converted Record Location",

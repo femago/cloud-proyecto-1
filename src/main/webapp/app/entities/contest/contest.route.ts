@@ -39,6 +39,9 @@ export const contestRoute: Routes = [
     }, {
         path: 'contest/:id',
         component: ContestDetailComponent,
+        resolve: {
+            'pagingParams': ContestResolvePagingParams
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'cloiceApp.contest.home.title'

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
@@ -6,6 +6,7 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'n
 import { Application } from './application.model';
 import { ApplicationService } from './application.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
+import {Contest} from '../contest/contest.model';
 
 @Component({
     selector: 'jhi-application-table',
@@ -13,6 +14,8 @@ import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 })
 export class ApplicationTableComponent implements OnInit, OnDestroy {
 
+    @Input()
+    contest: Contest;
     currentAccount: any;
     applications: Application[];
     error: any;
@@ -28,6 +31,13 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
     previousPage: any;
     reverse: any;
 
+    sources: Array<Object> = [
+            {
+                src: 'http://static.videogular.com/assets/audios/videogular.mp3',
+                type: 'audio/mp3'
+            }
+        ];
+
     constructor(
         private applicationService: ApplicationService,
         private parseLinks: JhiParseLinks,
@@ -40,20 +50,17 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
-            console.log('Data de paginacion', data);
-            this.page = 1;
-            this.reverse = true;
-            this.predicate = 'id';
-            // this.page = data.pagingParams.page;
-            // this.previousPage = data.pagingParams.page;
-            // this.reverse = data.pagingParams.ascending;
-            // this.predicate = data.pagingParams.predicate;
+            console.log('ApplicationTableComponent.paginacion', data);
+            this.page = data.pagingParams.page;
+            this.previousPage = data.pagingParams.page;
+            this.reverse = false;
+            this.predicate = 'createDate'
         });
     }
 
     loadAll() {
-        this.applicationService.query({
-            page: this.page - 1,
+        this.applicationService.queryContests(this.contest.id,
+            {page: this.page - 1,
             size: this.itemsPerPage,
             sort: this.sort()}).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
@@ -67,7 +74,7 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
         }
     }
     transition() {
-        this.router.navigate(['/application'], {queryParams:
+        this.router.navigate(['/contest', this.contest.id], {queryParams:
                 {
                     page: this.page,
                     size: this.itemsPerPage,

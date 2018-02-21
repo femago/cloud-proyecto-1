@@ -1,6 +1,11 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import {VgCoreModule} from 'videogular2/core';
+import {VgControlsModule} from 'videogular2/controls';
+import {VgOverlayPlayModule} from 'videogular2/overlay-play';
+import {VgBufferingModule} from 'videogular2/buffering';
+
 import { CloiceSharedModule } from '../../shared';
 import {
     ApplicationService,
@@ -27,6 +32,10 @@ const ENTITY_STATES = [
         ApplicationTableComponent
     ],
     imports: [
+        VgCoreModule,
+        VgControlsModule,
+        VgOverlayPlayModule,
+        VgBufferingModule,
         CloiceSharedModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
