@@ -8,12 +8,12 @@ import { ApplicationService } from './application.service';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 
 @Component({
-    selector: 'jhi-application',
-    templateUrl: './application.component.html'
+    selector: 'jhi-application-table',
+    templateUrl: './application-table.component.html'
 })
-export class ApplicationComponent implements OnInit, OnDestroy {
+export class ApplicationTableComponent implements OnInit, OnDestroy {
 
-currentAccount: any;
+    currentAccount: any;
     applications: Application[];
     error: any;
     success: any;
@@ -41,10 +41,13 @@ currentAccount: any;
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             console.log('Data de paginacion', data);
-            this.page = data.pagingParams.page;
-            this.previousPage = data.pagingParams.page;
-            this.reverse = data.pagingParams.ascending;
-            this.predicate = data.pagingParams.predicate;
+            this.page = 1;
+            this.reverse = true;
+            this.predicate = 'id';
+            // this.page = data.pagingParams.page;
+            // this.previousPage = data.pagingParams.page;
+            // this.reverse = data.pagingParams.ascending;
+            // this.predicate = data.pagingParams.predicate;
         });
     }
 
@@ -65,11 +68,11 @@ currentAccount: any;
     }
     transition() {
         this.router.navigate(['/application'], {queryParams:
-            {
-                page: this.page,
-                size: this.itemsPerPage,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
+                {
+                    page: this.page,
+                    size: this.itemsPerPage,
+                    sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+                }
         });
         this.loadAll();
     }

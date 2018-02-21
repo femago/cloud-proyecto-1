@@ -44,6 +44,7 @@ currentAccount: any;
             this.previousPage = data.pagingParams.page;
             this.reverse = data.pagingParams.ascending;
             this.predicate = data.pagingParams.predicate;
+            console.log('Data de paginacion', data)
         });
     }
 

@@ -16,6 +16,7 @@ import {
     contestPopupRoute,
     ContestResolvePagingParams,
 } from './';
+import {CloiceApplicationModule} from '../application/application.module';
 
 const ENTITY_STATES = [
     ...contestRoute,
@@ -26,6 +27,7 @@ const ENTITY_STATES = [
     imports: [
         CloiceSharedModule,
         CloiceAdminModule,
+        CloiceApplicationModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
     declarations: [

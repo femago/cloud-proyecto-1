@@ -1,14 +1,16 @@
 package co.edu.uniandes.cloud.service.impl;
 
-import co.edu.uniandes.cloud.service.ApplicationService;
 import co.edu.uniandes.cloud.domain.Application;
 import co.edu.uniandes.cloud.repository.ApplicationRepository;
+import co.edu.uniandes.cloud.service.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 
 
 /**
@@ -34,6 +36,7 @@ public class ApplicationServiceImpl implements ApplicationService {
      */
     @Override
     public Application save(Application application) {
+        application.setCreateDate(Instant.now());
         log.debug("Request to save Application : {}", application);
         return applicationRepository.save(application);
     }
@@ -73,5 +76,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     public void delete(Long id) {
         log.debug("Request to delete Application : {}", id);
         applicationRepository.delete(id);
+    }
+
+    @Override
+    public Page<Application> findByContest(Pageable pageable, Long contestId) {
+        log.debug("Request to get all Applications by Contest");
+        return applicationRepository.findByContest_Id(pageable, contestId);
     }
 }
