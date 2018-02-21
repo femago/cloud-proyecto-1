@@ -44,6 +44,12 @@ export class ApplicationService {
             .map((res: Response) => this.convertResponse(res));
     }
 
+    queryContests(contestId: number, req?: any): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        return this.http.get(`${this.resourceUrl}/contests/${contestId}`, options)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
     delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
