@@ -23,7 +23,6 @@ public class Application implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Column(name = "create_date", nullable = false)
     private Instant createDate;
 

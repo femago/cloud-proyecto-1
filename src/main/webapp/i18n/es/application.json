@@ -2,29 +2,29 @@
     "cloiceApp": {
         "application" : {
             "home": {
-                "title": "Applications",
-                "createLabel": "Crear nuevo Application",
-                "createOrEditLabel": "Crear o editar Application"
+                "title": "Aplicaciones",
+                "createLabel": "Aplicar",
+                "createOrEditLabel": "Aplicar o editar Aplicación"
             },
-            "created": "Un nuevo Application ha sido creado con el identificador {{ param }}",
-            "updated": "Un Application ha sido actualizado con el identificador {{ param }}",
-            "deleted": "Un Application ha sido eliminado con el identificador {{ param }}",
+            "created": "Su aplicación a sido creada - {{ param }}",
+            "updated": "Su aplicación a sido actualizada - {{ param }}",
+            "deleted": "Su aplicación fue eliminada correctamente {{ param }}",
             "delete": {
-                "question": "¿Seguro que quiere eliminar Application {{ id }}?"
+                "question": "¿Seguro que quiere eliminar la aplicación {{ id }}?"
             },
             "detail": {
-                "title": "Application"
+                "title": "Aplicaciones"
             },
-            "createDate": "Create Date",
-            "name": "Name",
-            "lastname": "Lastname",
+            "createDate": "Creación",
+            "name": "Nombres",
+            "lastname": "Apellidos",
             "email": "Email",
             "originalRecord": "Original Record",
-            "notes": "Notes",
+            "notes": "Notas",
             "originalRecordLocation": "Original Record Location",
             "convertedRecordLocation": "Converted Record Location",
-            "status": "Status",
-            "contest": "Contest"
+            "status": "Estado",
+            "contest": "Concurso"
         }
     }
 }

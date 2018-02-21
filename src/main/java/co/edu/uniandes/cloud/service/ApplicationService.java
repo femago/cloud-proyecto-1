@@ -39,4 +39,6 @@ public interface ApplicationService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    Page<Application> findByContest(Pageable pageable, Long contestId);
 }

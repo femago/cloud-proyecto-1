@@ -1,11 +1,11 @@
 package co.edu.uniandes.cloud.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import co.edu.uniandes.cloud.domain.Application;
 import co.edu.uniandes.cloud.service.ApplicationService;
 import co.edu.uniandes.cloud.web.rest.errors.BadRequestAlertException;
 import co.edu.uniandes.cloud.web.rest.util.HeaderUtil;
 import co.edu.uniandes.cloud.web.rest.util.PaginationUtil;
+import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -123,5 +122,14 @@ public class ApplicationResource {
         log.debug("REST request to delete Application : {}", id);
         applicationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/applications/contests/{contestId}")
+    @Timed
+    public ResponseEntity<List<Application>> getApplicationsByContest(Pageable pageable, @PathVariable Long contestId) {
+        log.debug("REST request to get a page of Applications by Contest");
+        Page<Application> page = applicationService.findByContest(pageable, contestId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/applications/contests/" + contestId);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }

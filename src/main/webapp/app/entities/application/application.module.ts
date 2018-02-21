@@ -15,6 +15,7 @@ import {
     applicationPopupRoute,
     ApplicationResolvePagingParams,
 } from './';
+import {ApplicationTableComponent} from './application-table.component';
 
 const ENTITY_STATES = [
     ...applicationRoute,
@@ -22,6 +23,9 @@ const ENTITY_STATES = [
 ];
 
 @NgModule({
+    exports: [
+        ApplicationTableComponent
+    ],
     imports: [
         CloiceSharedModule,
         RouterModule.forChild(ENTITY_STATES)
@@ -33,6 +37,7 @@ const ENTITY_STATES = [
         ApplicationDeleteDialogComponent,
         ApplicationPopupComponent,
         ApplicationDeletePopupComponent,
+        ApplicationTableComponent,
     ],
     entryComponents: [
         ApplicationComponent,
@@ -40,6 +45,7 @@ const ENTITY_STATES = [
         ApplicationPopupComponent,
         ApplicationDeleteDialogComponent,
         ApplicationDeletePopupComponent,
+        ApplicationTableComponent,
     ],
     providers: [
         ApplicationService,
