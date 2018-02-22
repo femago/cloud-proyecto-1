@@ -1,5 +1,6 @@
 package co.edu.uniandes.cloud.service.impl;
 
+import co.edu.uniandes.cloud.config.ApplicationProperties;
 import co.edu.uniandes.cloud.domain.Application;
 import co.edu.uniandes.cloud.repository.ApplicationRepository;
 import co.edu.uniandes.cloud.service.ApplicationService;
@@ -10,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Instant;
 
 
@@ -23,9 +27,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final Logger log = LoggerFactory.getLogger(ApplicationServiceImpl.class);
 
     private final ApplicationRepository applicationRepository;
+    private final ApplicationProperties applicationProperties;
 
-    public ApplicationServiceImpl(ApplicationRepository applicationRepository) {
+    public ApplicationServiceImpl(ApplicationRepository applicationRepository,
+                                  ApplicationProperties applicationProperties) {
         this.applicationRepository = applicationRepository;
+        this.applicationProperties = applicationProperties;
     }
 
     /**
@@ -38,7 +45,19 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application save(Application application) {
         application.setCreateDate(Instant.now());
         log.debug("Request to save Application : {}", application);
-        return applicationRepository.save(application);
+        Application save = applicationRepository.save(application);
+        String ext = "_" + application.getId() + "." + extractExtFromContentType(application.getOriginalRecordContentType());
+        try {
+            final File vtbp = File.createTempFile("vtbp", ext, applicationProperties.getFolder().getVoicesTbp().toFile());
+            Files.write(vtbp.toPath(), application.getOriginalRecord());
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+        return save;
+    }
+
+    private String extractExtFromContentType(String contentType) {
+        return contentType.split("/")[1];
     }
 
     /**
