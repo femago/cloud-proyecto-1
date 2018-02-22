@@ -11,32 +11,6 @@
     <jhi-alert></jhi-alert>
     <div class="row">
     </div>
-    <div class="row">
-        <vg-player style="height: 50px;">
-            <vg-controls>
-                <vg-play-pause></vg-play-pause>
-                <vg-playback-button></vg-playback-button>
-
-                <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-
-                <vg-scrub-bar>
-                    <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-                    <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-                </vg-scrub-bar>
-
-                <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
-                <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-
-                <vg-mute></vg-mute>
-
-                <vg-fullscreen></vg-fullscreen>
-            </vg-controls>
-
-            <audio #media [vgMedia]="media" id="myAudio" preload="auto">
-                <source *ngFor="let audio of sources" [src]="audio.src" [type]="audio.type">
-            </audio>
-        </vg-player>
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="applications">
         <table class="table table-striped">
@@ -49,6 +23,7 @@
                 <th jhiSortBy="originalRecord"><span jhiTranslate="cloiceApp.application.originalRecord">Original Record</span> <span class="fa fa-sort"></span></th>
                 <th jhiSortBy="status"><span jhiTranslate="cloiceApp.application.status">Status</span> <span class="fa fa-sort"></span></th>
                 <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -58,10 +33,35 @@
                 <td>{{application.lastname}}</td>
                 <td>{{application.createDate | date:'medium'}}</td>
                 <td>
-                    <a *ngIf="application.originalRecord" (click)="openFile(application.originalRecordContentType, application.originalRecord)" jhiTranslate="entity.action.open">open</a>
-                    <span *ngIf="application.originalRecord">{{application.originalRecordContentType}}, {{byteSize(application.originalRecord)}}</span>
+                    <button *ngIf="application.originalRecord"
+                            type="submit"
+                            (click)="openFile(application.originalRecordContentType, application.originalRecord)"
+                            class="btn btn-success">
+                        <span class="fa fa-cloud-download"></span>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.download">download</span>
+                    </button>
                 </td>
                 <td jhiTranslate="{{'cloiceApp.ApplicationState.' + application.status}}">{{application.status}}</td>
+                <td>
+                    <vg-player style="height: 50px; width: 200px; font-size: 12px">
+                        <vg-controls>
+                            <vg-play-pause style="width: 35px;"></vg-play-pause>
+
+                            <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+
+                            <vg-scrub-bar>
+                                <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                                <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                            </vg-scrub-bar>
+
+                            <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+                        </vg-controls>
+
+                        <audio #media [vgMedia]="media" id="myAudio" preload="auto">
+                            <source *ngFor="let audio of sources" [src]="audio.src" [type]="audio.type">
+                        </audio>
+                    </vg-player>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

@@ -41,13 +41,9 @@
         <dd>
             <span>{{contest.uuid}}</span>
         </dd>
-        <dt><span jhiTranslate="cloiceApp.contest.startDate">Start Date</span></dt>
+        <dt><span jhiTranslate="cloiceApp.contest.startDate">Start Date</span> - <span jhiTranslate="cloiceApp.contest.endDate">End Date</span></dt>
         <dd>
-            <span>{{contest.startDate | date:'mediumDate'}}</span>
-        </dd>
-        <dt><span jhiTranslate="cloiceApp.contest.endDate">End Date</span></dt>
-        <dd>
-            <span>{{contest.endDate | date:'mediumDate'}}</span>
+            <span>{{contest.startDate | date:'mediumDate'}} - {{contest.endDate | date:'mediumDate'}}</span>
         </dd>
         <dt><span jhiTranslate="cloiceApp.contest.price">Price</span></dt>
         <dd>
@@ -60,10 +56,6 @@
         <dt><span jhiTranslate="cloiceApp.contest.notes">Notes</span></dt>
         <dd>
             <span>{{contest.notes}}</span>
-        </dd>
-        <dt><span jhiTranslate="cloiceApp.contest.user">User</span></dt>
-        <dd>
-            {{contest.user?.login}}
         </dd>
     </dl>
 

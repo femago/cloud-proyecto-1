@@ -106,3 +106,6 @@ jhipster:
 # ===================================================================
 
 application:
+    folder:
+        voices-tbp: ./cloice/voices/tbp
+        voices-archive: ./cloice/voices/archive
