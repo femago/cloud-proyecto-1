@@ -55,7 +55,6 @@ public class Application implements Serializable {
     @Column(name = "converted_record_location")
     private String convertedRecordLocation;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ApplicationState status;

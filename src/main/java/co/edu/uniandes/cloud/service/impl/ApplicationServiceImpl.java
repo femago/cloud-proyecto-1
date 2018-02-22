@@ -2,6 +2,7 @@ package co.edu.uniandes.cloud.service.impl;
 
 import co.edu.uniandes.cloud.config.ApplicationProperties;
 import co.edu.uniandes.cloud.domain.Application;
+import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
 import co.edu.uniandes.cloud.repository.ApplicationRepository;
 import co.edu.uniandes.cloud.service.ApplicationService;
 import org.slf4j.Logger;
@@ -44,12 +45,15 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application save(Application application) {
         application.setCreateDate(Instant.now());
+        application.setStatus(ApplicationState.IN_PROCESS);
         log.debug("Request to save Application : {}", application);
         Application save = applicationRepository.save(application);
         String ext = "_" + application.getId() + "." + extractExtFromContentType(application.getOriginalRecordContentType());
         try {
-            final File vtbp = File.createTempFile("vtbp", ext, applicationProperties.getFolder().getVoicesTbp().toFile());
-            Files.write(vtbp.toPath(), application.getOriginalRecord());
+            final File originalVoiceFile = File.createTempFile("v_o_", ext, applicationProperties.getFolder().getVoicesTbp().toFile());
+            Files.write(originalVoiceFile.toPath(), application.getOriginalRecord());
+            application.setOriginalRecordLocation(originalVoiceFile.getName());
+            applicationRepository.save(application);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

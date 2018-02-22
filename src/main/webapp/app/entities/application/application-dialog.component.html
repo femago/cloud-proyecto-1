@@ -71,31 +71,8 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cloiceApp.application.notes" for="field_notes">Notes</label>
-            <input type="text" class="form-control" name="notes" id="field_notes"
-                [(ngModel)]="application.notes" />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="cloiceApp.application.originalRecordLocation" for="field_originalRecordLocation">Original Record Location</label>
-            <input type="text" class="form-control" name="originalRecordLocation" id="field_originalRecordLocation"
-                [(ngModel)]="application.originalRecordLocation" />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="cloiceApp.application.convertedRecordLocation" for="field_convertedRecordLocation">Converted Record Location</label>
-            <input type="text" class="form-control" name="convertedRecordLocation" id="field_convertedRecordLocation"
-                [(ngModel)]="application.convertedRecordLocation" />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="cloiceApp.application.status" for="field_status">Status</label>
-            <select class="form-control" name="status" [(ngModel)]="application.status" id="field_status"  required>
-                <option value="IN_PROCESS">{{'cloiceApp.ApplicationState.IN_PROCESS' | translate}}</option>
-                <option value="CONVERTED">{{'cloiceApp.ApplicationState.CONVERTED' | translate}}</option>
-            </select>
-            <div [hidden]="!(editForm.controls.status?.dirty && editForm.controls.status?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.status?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
+            <textarea class="form-control" name="notes" id="field_notes"
+                [(ngModel)]="application.notes" ></textarea>
         </div>
 
         <div class="form-group">
