@@ -1,11 +1,14 @@
 package co.edu.uniandes.cloud.repository;
 
 import co.edu.uniandes.cloud.domain.Application;
+import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+
+import java.util.List;
 
 
 /**
@@ -16,4 +19,6 @@ import org.springframework.data.jpa.repository.*;
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
 
     Page<Application> findByContest_Id(Pageable pageable, Long contestId);
+
+    List<Application> findByStatusEquals(ApplicationState status);
 }
