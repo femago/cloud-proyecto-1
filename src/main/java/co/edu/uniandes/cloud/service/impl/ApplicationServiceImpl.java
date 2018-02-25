@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.time.Instant;
 
@@ -25,6 +26,8 @@ import java.time.Instant;
 @Transactional
 public class ApplicationServiceImpl implements ApplicationService {
 
+    public static final String VOICE_PREFIX = "voice_";
+    public static final String ORIGINAL_VOICE_MARKER = "_orig_";
     private final Logger log = LoggerFactory.getLogger(ApplicationServiceImpl.class);
 
     private final ApplicationRepository applicationRepository;
@@ -46,18 +49,30 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application save(Application application) {
         application.setCreateDate(Instant.now());
         application.setStatus(ApplicationState.IN_PROCESS);
+
+        final byte[] originalRecordCopy = application.getOriginalRecord();
+        application.setOriginalRecord(new byte[]{1});
+
         log.debug("Request to save Application : {}", application);
         Application save = applicationRepository.save(application);
-        String ext = "_" + application.getId() + "." + extractExtFromContentType(application.getOriginalRecordContentType());
+
+        storeVoiceTBP(application, originalRecordCopy);
+
+        return save;
+    }
+
+    private void storeVoiceTBP(Application application, byte[] originalRecordCopy) {
         try {
-            final File originalVoiceFile = File.createTempFile("v_o_", ext, applicationProperties.getFolder().getVoicesTbp().toFile());
-            Files.write(originalVoiceFile.toPath(), application.getOriginalRecord());
+            final String suffix = ORIGINAL_VOICE_MARKER + application.getId() + "." + extractExtFromContentType(application.getOriginalRecordContentType());
+            final File originalVoiceFile = File.createTempFile(VOICE_PREFIX, suffix, applicationProperties.getFolder().getVoicesTbp().toFile());
+
+            Files.write(originalVoiceFile.toPath(), originalRecordCopy);
+
             application.setOriginalRecordLocation(originalVoiceFile.getName());
             applicationRepository.save(application);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new UncheckedIOException(e);
         }
-        return save;
     }
 
     private String extractExtFromContentType(String contentType) {
