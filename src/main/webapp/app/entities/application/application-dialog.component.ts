@@ -37,7 +37,7 @@ export class ApplicationDialogComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isSaving = false;
         this.contest = this.applicationService.currentContest;
-        this.contestService.query()
+        this.contestService.queryPublished()
             .subscribe((res: ResponseWrapper) => { this.contests = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 

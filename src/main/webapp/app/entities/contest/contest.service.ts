@@ -38,7 +38,13 @@ export class ContestService {
         });
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    queryOwned(req?: any): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        return this.http.get(`${this.resourceUrl}/principal`, options)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
+    queryPublished(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
         return this.http.get(this.resourceUrl, options)
             .map((res: Response) => this.convertResponse(res));

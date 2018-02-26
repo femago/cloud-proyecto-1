@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiAlertService, JhiDataUtils, JhiEventManager, JhiParseLinks} from 'ng-jhipster';
 
-import { Contest } from './contest.model';
-import { ContestService } from './contest.service';
-import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
+import {Contest} from './contest.model';
+import {ContestService} from './contest.service';
+import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
 
 @Component({
     selector: 'jhi-contest',
@@ -27,6 +27,7 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
+    contentMode: string;
 
     constructor(
         private contestService: ContestService,
@@ -44,15 +45,29 @@ currentAccount: any;
             this.previousPage = data.pagingParams.page;
             this.reverse = data.pagingParams.ascending;
             this.predicate = data.pagingParams.predicate;
-            console.log('Data de paginacion', data)
+
+            this.contentMode = data.contentMode;
+            console.log('Data de la ruta', data)
         });
     }
 
     loadAll() {
-        this.contestService.query({
-            page: this.page - 1,
-            size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
+        let contestResponse;
+        if (this.contentMode === 'owned') {
+            contestResponse = this.contestService.queryOwned({
+                page: this.page - 1,
+                size: 50,
+                sort: this.sort()});
+        } else if (this.contentMode === 'published') {
+            contestResponse = this.contestService.queryPublished({
+                page: this.page - 1,
+                size: this.itemsPerPage,
+                sort: this.sort()});
+        } else {
+            console.error('Invalid mode to query contests', this.contentMode)
+            return;
+        }
+        contestResponse.subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
