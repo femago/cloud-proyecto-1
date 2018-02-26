@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiAlertService, JhiDataUtils, JhiEventManager, JhiParseLinks} from 'ng-jhipster';
 
-import { Application } from './application.model';
-import { ApplicationService } from './application.service';
-import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
+import {Application} from './application.model';
+import {ApplicationService} from './application.service';
+import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
 import {Contest} from '../contest/contest.model';
 
 @Component({
@@ -50,7 +50,6 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
-            console.log('ApplicationTableComponent.paginacion', data);
             this.page = data.pagingParams.page;
             this.previousPage = data.pagingParams.page;
             this.reverse = false;
@@ -66,6 +65,7 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
+
     }
     loadPage(page: number) {
         if (page !== this.previousPage) {
@@ -106,6 +106,11 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
 
     trackId(index: number, item: Application) {
         return item.id;
+    }
+
+    newApplication() {
+        this.applicationService.currentContest = this.contest;
+        this.router.navigate(['/', {outlets: {popup: ['application-new']}}]);
     }
 
     byteSize(field) {

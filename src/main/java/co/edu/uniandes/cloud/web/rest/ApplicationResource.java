@@ -53,6 +53,9 @@ public class ApplicationResource {
         if (application.getId() != null) {
             throw new BadRequestAlertException("A new application cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if (application.getContest() == null || application.getContest().getId() == null) {
+            throw new BadRequestAlertException("A new application requires a contest", ENTITY_NAME, "contestrq");
+        }
         Application result = applicationService.save(application);
         return ResponseEntity.created(new URI("/api/applications/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -128,7 +131,7 @@ public class ApplicationResource {
     @Timed
     public ResponseEntity<List<Application>> getApplicationsByContest(Pageable pageable, @PathVariable Long contestId) {
         log.debug("REST request to get a page of Applications by Contest");
-        Page<Application> page = applicationService.findByContest(pageable, contestId);
+        Page<Application> page = applicationService.findConvertedByContest(pageable, contestId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/applications/contests/" + contestId);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

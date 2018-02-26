@@ -18,7 +18,7 @@ import java.util.List;
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
 
-    Page<Application> findByContest_Id(Pageable pageable, Long contestId);
+    Page<Application> findByStatusAndContest_Id(Pageable pageable, ApplicationState applicationState, Long contestId);
 
     List<Application> findByStatusEquals(ApplicationState status);
 }

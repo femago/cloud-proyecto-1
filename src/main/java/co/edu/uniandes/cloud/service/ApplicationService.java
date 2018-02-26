@@ -40,5 +40,5 @@ public interface ApplicationService {
      */
     void delete(Long id);
 
-    Page<Application> findByContest(Pageable pageable, Long contestId);
+    Page<Application> findConvertedByContest(Pageable pageable, Long contestId);
 }

@@ -6,7 +6,7 @@
                 "createLabel": "Aplicar",
                 "createOrEditLabel": "Aplicar o editar Aplicación"
             },
-            "created": "Su aplicación a sido creada - {{ param }}",
+            "created": "Tu aplicación a sido creada, en un momento sera procesada y publicada en la pagina del concurso ({{ param }}). Te notificaremos por correo cuando sea publicada",
             "updated": "Su aplicación a sido actualizada - {{ param }}",
             "deleted": "Su aplicación fue eliminada correctamente {{ param }}",
             "delete": {

@@ -117,8 +117,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Page<Application> findByContest(Pageable pageable, Long contestId) {
+    public Page<Application> findConvertedByContest(Pageable pageable, Long contestId) {
         log.debug("Request to get all Applications by Contest");
-        return applicationRepository.findByContest_Id(pageable, contestId);
+        return applicationRepository.findByStatusAndContest_Id(pageable, ApplicationState.CONVERTED, contestId);
     }
 }

@@ -1,7 +1,7 @@
 <div>
     <h3>
         <span jhiTranslate="cloiceApp.application.home.title">Applications</span>
-        <button class="btn btn-primary float-right jh-create-entity create-application" [routerLink]="['/', { outlets: { popup: ['application-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-application" (click)="newApplication()">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="cloiceApp.application.home.createLabel">
             Create new Application
