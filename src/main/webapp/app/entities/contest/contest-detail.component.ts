@@ -5,6 +5,7 @@ import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 
 import { Contest } from './contest.model';
 import { ContestService } from './contest.service';
+import {CONTEST_CONTENT_MODE} from '../../shared';
 
 @Component({
     selector: 'jhi-contest-detail',
@@ -13,6 +14,7 @@ import { ContestService } from './contest.service';
 export class ContestDetailComponent implements OnInit, OnDestroy {
 
     contest: Contest;
+    contentMode: string;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
 
@@ -20,8 +22,13 @@ export class ContestDetailComponent implements OnInit, OnDestroy {
         private eventManager: JhiEventManager,
         private dataUtils: JhiDataUtils,
         private contestService: ContestService,
+        private activatedRoute: ActivatedRoute,
         private route: ActivatedRoute
     ) {
+        this.activatedRoute.data.subscribe((data) => {
+            this.contentMode = data.contentMode;
+            console.log('Data de la ruta', data)
+        });
     }
 
     ngOnInit() {
@@ -32,7 +39,15 @@ export class ContestDetailComponent implements OnInit, OnDestroy {
     }
 
     load(id) {
-        this.contestService.find(id).subscribe((contest) => {
+        let contestObservable;
+        if (this.isOwned()) {
+            contestObservable = this.contestService.find(id);
+        } else if (this.isPublished()) {
+            contestObservable = this.contestService.findByUUID(id);
+        } else {
+            throw new Error(`Invalid mode to query contests ${this.contentMode}`);
+        }
+        contestObservable.subscribe((contest) => {
             this.contest = contest;
         });
     }
@@ -57,5 +72,12 @@ export class ContestDetailComponent implements OnInit, OnDestroy {
             'contestListModification',
             (response) => this.load(this.contest.id)
         );
+    }
+
+    isOwned() {
+        return this.contentMode === CONTEST_CONTENT_MODE.owned;
+    }
+    isPublished() {
+        return this.contentMode === CONTEST_CONTENT_MODE.published;
     }
 }
