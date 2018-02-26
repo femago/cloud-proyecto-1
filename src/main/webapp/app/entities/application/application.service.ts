@@ -89,4 +89,12 @@ export class ApplicationService {
         copy.createDate = this.dateUtils.toDate(application.createDate);
         return copy;
     }
+
+    downloadVoice(id: number) {
+
+        return this._httpClient.get(`${this.resourceUrl}/${id}/voice/converted`, { responseType: 'blob'})
+            .map(res => {
+                return new Blob([res], { type: 'application/pdf', });
+            });
+    }
 }
