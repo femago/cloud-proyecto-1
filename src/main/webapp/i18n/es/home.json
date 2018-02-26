@@ -1,7 +1,7 @@
 {
     "home": {
         "title": "¡Bienvenido a cloice!",
-        "subtitle": "su plataforma de concursos de voces en la nube",
+        "subtitle": "Tu plataforma de concursos de voces en la nube",
         "logged": {
             "message": "Está conectado como \"{{username}}\"."
         }
