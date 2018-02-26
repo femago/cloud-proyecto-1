@@ -38,6 +38,18 @@ export const contestRoute: Routes = [
         },
         canActivate: [UserRouteAccessService]
     }, {
+        path: 'contest/:id',
+        component: ContestDetailComponent,
+        resolve: {
+            'pagingParams': ContestResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'cloiceApp.contest.detail.pageTitle',
+            contentMode: CONTEST_CONTENT_MODE.owned
+        },
+        canActivate: [UserRouteAccessService]
+    }, {
         path: 'contest-open',
         component: ContestComponent,
         resolve: {
@@ -47,20 +59,19 @@ export const contestRoute: Routes = [
             authorities: [],
             pageTitle: 'cloiceApp.contest.home.title',
             contentMode: CONTEST_CONTENT_MODE.published
-        },
-        canActivate: [UserRouteAccessService]
+        }
     }, {
-        path: 'contest/:id',
+        path: 'contest-open/:uuid',
         component: ContestDetailComponent,
         resolve: {
             'pagingParams': ContestResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'cloiceApp.contest.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }
+            authorities: [],
+            pageTitle: 'cloiceApp.contest.detail.pageTitle',
+            contentMode: CONTEST_CONTENT_MODE.published
+        }
+    },
 ];
 
 export const contestPopupRoute: Routes = [

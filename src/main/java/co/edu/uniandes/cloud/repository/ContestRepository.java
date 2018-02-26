@@ -14,7 +14,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContestRepository extends JpaRepository<Contest, Long> {
 
-    @Query("select contest from Contest contest where contest.user.login = ?#{principal.username}  order by contest.createDate desc")
+    @Query("select contest from Contest contest where contest.user.login = ?#{principal.username}")
     Page<Contest> findByUserIsCurrentUser(Pageable pageable);
 
+    Contest findByUuid(String uuid);
 }

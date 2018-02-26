@@ -44,7 +44,7 @@ currentAccount: any;
             this.page = data.pagingParams.page;
             this.previousPage = data.pagingParams.page;
             this.reverse = false;
-            this.predicate = 'createDate'
+            this.predicate = 'createDate';
 
             this.contentMode = data.contentMode;
             console.log('Data de la ruta', data)
@@ -56,22 +56,30 @@ currentAccount: any;
     isPublished() {
         return this.contentMode === CONTEST_CONTENT_MODE.published;
     }
+    routeByMode() {
+        if (this.isOwned()) {
+            return '/contest';
+        } else if (this.isPublished()) {
+            return '/contest-open';
+        } else {
+            throw new Error(`Invalid mode to query contests ${this.contentMode}`);
+        }
+    }
     loadAll() {
         let contestResponse;
+        const rqParams = {
+            page: this.page - 1,
+            size: this.itemsPerPage,
+            sort: this.sort()};
+
         if (this.isOwned()) {
-            contestResponse = this.contestService.queryOwned({
-                page: this.page - 1,
-                size: 50,
-                sort: this.sort()});
+            contestResponse = this.contestService.queryOwned(rqParams);
         } else if (this.isPublished()) {
-            contestResponse = this.contestService.queryPublished({
-                page: this.page - 1,
-                size: this.itemsPerPage,
-                sort: this.sort()});
+            contestResponse = this.contestService.queryPublished(rqParams);
         } else {
-            console.error('Invalid mode to query contests', this.contentMode)
-            return;
+            throw new Error(`Invalid mode to query contests ${this.contentMode}`);
         }
+
         contestResponse.subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
@@ -84,7 +92,7 @@ currentAccount: any;
         }
     }
     transition() {
-        this.router.navigate(['/contest'], {queryParams:
+        this.router.navigate([this.routeByMode()], {queryParams:
             {
                 page: this.page,
                 size: this.itemsPerPage,
@@ -96,7 +104,7 @@ currentAccount: any;
 
     clear() {
         this.page = 0;
-        this.router.navigate(['/contest', {
+        this.router.navigate([this.routeByMode(), {
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
         }]);

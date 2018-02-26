@@ -91,4 +91,10 @@ public class ContestServiceImpl implements ContestService {
         log.debug("Request to get all Contest by User");
         return contestRepository.findByUserIsCurrentUser(pageable);
     }
+
+    @Override
+    public Contest findByUUID(String uuid) {
+        log.debug("Request to get Contest by UUID");
+        return contestRepository.findByUuid(uuid);
+    }
 }
