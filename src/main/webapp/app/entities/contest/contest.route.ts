@@ -33,7 +33,20 @@ export const contestRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'cloiceApp.contest.home.title'
+            pageTitle: 'cloiceApp.contest.home.title',
+            contentMode: 'owned'
+        },
+        canActivate: [UserRouteAccessService]
+    }, {
+        path: 'contest-open',
+        component: ContestComponent,
+        resolve: {
+            'pagingParams': ContestResolvePagingParams,
+        },
+        data: {
+            authorities: [],
+            pageTitle: 'cloiceApp.contest.home.title',
+            contentMode: 'published'
         },
         canActivate: [UserRouteAccessService]
     }, {
