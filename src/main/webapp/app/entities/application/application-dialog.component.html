@@ -75,7 +75,7 @@
                 [(ngModel)]="application.notes" ></textarea>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" *ngIf="!contest">
             <label class="form-control-label" jhiTranslate="cloiceApp.application.contest" for="field_contest">Contest</label>
             <select class="form-control" id="field_contest" name="contest" [(ngModel)]="application.contest" >
                 <option [ngValue]="null"></option>

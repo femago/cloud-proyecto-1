@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import {Injectable} from '@angular/core';
+import {Http, Response} from '@angular/http';
+import {Observable} from 'rxjs/Observable';
+import {SERVER_API_URL} from '../../app.constants';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import {JhiDateUtils} from 'ng-jhipster';
 
-import { Application } from './application.model';
-import { ResponseWrapper, createRequestOption } from '../../shared';
+import {Application} from './application.model';
+import {BaseEntity, createRequestOption, ResponseWrapper} from '../../shared';
 
 @Injectable()
 export class ApplicationService {
 
     private resourceUrl =  SERVER_API_URL + 'api/applications';
+
+    currentContest: BaseEntity = null;
 
     constructor(private http: Http, private dateUtils: JhiDateUtils) { }
 

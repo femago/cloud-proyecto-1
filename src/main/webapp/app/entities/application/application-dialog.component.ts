@@ -1,27 +1,28 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Response } from '@angular/http';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Response} from '@angular/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiAlertService, JhiDataUtils, JhiEventManager} from 'ng-jhipster';
 
-import { Application } from './application.model';
-import { ApplicationPopupService } from './application-popup.service';
-import { ApplicationService } from './application.service';
-import { Contest, ContestService } from '../contest';
-import { ResponseWrapper } from '../../shared';
+import {Application} from './application.model';
+import {ApplicationPopupService} from './application-popup.service';
+import {ApplicationService} from './application.service';
+import {Contest, ContestService} from '../contest';
+import {ResponseWrapper} from '../../shared';
 
 @Component({
     selector: 'jhi-application-dialog',
     templateUrl: './application-dialog.component.html'
 })
-export class ApplicationDialogComponent implements OnInit {
+export class ApplicationDialogComponent implements OnInit, OnDestroy {
 
     application: Application;
     isSaving: boolean;
 
     contests: Contest[];
+    contest: Contest;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -35,8 +36,13 @@ export class ApplicationDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.contest = this.applicationService.currentContest;
         this.contestService.query()
             .subscribe((res: ResponseWrapper) => { this.contests = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+    }
+
+    ngOnDestroy(): void {
+        this.applicationService.currentContest = null;
     }
 
     byteSize(field) {
@@ -57,6 +63,11 @@ export class ApplicationDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+
+        if (this.contest !== undefined) {
+            this.application.contest = this.contest;
+        }
+
         if (this.application.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.applicationService.update(this.application));
