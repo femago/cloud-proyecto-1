@@ -50,11 +50,11 @@ currentAccount: any;
             console.log('Data de la ruta', data)
         });
     }
-    isOwned() {
-        return this.contentMode === CONTEST_CONTENT_MODE.owned;
+    isPrivate() {
+        return this.contentMode === CONTEST_CONTENT_MODE.private;
     }
-    isPublished() {
-        return this.contentMode === CONTEST_CONTENT_MODE.published;
+    isPublic() {
+        return this.contentMode === CONTEST_CONTENT_MODE.public;
     }
 
     loadAll() {
@@ -64,9 +64,9 @@ currentAccount: any;
             size: this.itemsPerPage,
             sort: this.sort()};
 
-        if (this.isOwned()) {
+        if (this.isPrivate()) {
             contestResponse = this.contestService.queryOwned(rqParams);
-        } else if (this.isPublished()) {
+        } else if (this.isPublic()) {
             contestResponse = this.contestService.queryPublished(rqParams);
         } else {
             throw new Error(`Invalid mode to query contests ${this.contentMode}`);
@@ -138,9 +138,9 @@ currentAccount: any;
     }
 
     routeToContestDetail(id) {
-        if (this.isOwned()) {
+        if (this.isPrivate()) {
             this.router.navigate(['../contest', id ]);
-        }else if (this.isPublished()) {
+        }else if (this.isPublic()) {
             this.router.navigate(['../contest-open', id ]);
         }else {
             throw new Error(`Invalid mode to query contests ${this.contentMode}`);
@@ -157,9 +157,9 @@ currentAccount: any;
         this.jhiAlertService.error(error.message, null, null);
     }
     private routeByMode() {
-        if (this.isOwned()) {
+        if (this.isPrivate()) {
             return '/contest';
-        } else if (this.isPublished()) {
+        } else if (this.isPublic()) {
             return '/contest-open';
         } else {
             throw new Error(`Invalid mode to query contests ${this.contentMode}`);

@@ -40,9 +40,9 @@ export class ContestDetailComponent implements OnInit, OnDestroy {
 
     load(id) {
         let contestObservable;
-        if (this.isOwned()) {
+        if (this.isPrivate()) {
             contestObservable = this.contestService.find(id);
-        } else if (this.isPublished()) {
+        } else if (this.isPublic()) {
             contestObservable = this.contestService.findByUUID(id);
         } else {
             throw new Error(`Invalid mode to query contests ${this.contentMode}`);
@@ -74,10 +74,10 @@ export class ContestDetailComponent implements OnInit, OnDestroy {
         );
     }
 
-    isOwned() {
-        return this.contentMode === CONTEST_CONTENT_MODE.owned;
+    isPrivate() {
+        return this.contentMode === CONTEST_CONTENT_MODE.private;
     }
-    isPublished() {
-        return this.contentMode === CONTEST_CONTENT_MODE.published;
+    isPublic() {
+        return this.contentMode === CONTEST_CONTENT_MODE.public;
     }
 }
