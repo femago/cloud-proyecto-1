@@ -61,7 +61,7 @@ export const contestRoute: Routes = [
             contentMode: CONTEST_CONTENT_MODE.published
         }
     }, {
-        path: 'contest-open/:uuid',
+        path: 'contest-open/:id',
         component: ContestDetailComponent,
         resolve: {
             'pagingParams': ContestResolvePagingParams

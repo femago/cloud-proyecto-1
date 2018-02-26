@@ -56,15 +56,7 @@ currentAccount: any;
     isPublished() {
         return this.contentMode === CONTEST_CONTENT_MODE.published;
     }
-    routeByMode() {
-        if (this.isOwned()) {
-            return '/contest';
-        } else if (this.isPublished()) {
-            return '/contest-open';
-        } else {
-            throw new Error(`Invalid mode to query contests ${this.contentMode}`);
-        }
-    }
+
     loadAll() {
         let contestResponse;
         const rqParams = {
@@ -145,6 +137,15 @@ currentAccount: any;
         return result;
     }
 
+    routeToContestDetail(id) {
+        if (this.isOwned()) {
+            this.router.navigate(['../contest', id ]);
+        }else if (this.isPublished()) {
+            this.router.navigate(['../contest-open', id ]);
+        }else {
+            throw new Error(`Invalid mode to query contests ${this.contentMode}`);
+        }
+    }
     private onSuccess(data, headers) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
@@ -154,5 +155,14 @@ currentAccount: any;
     }
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+    private routeByMode() {
+        if (this.isOwned()) {
+            return '/contest';
+        } else if (this.isPublished()) {
+            return '/contest-open';
+        } else {
+            throw new Error(`Invalid mode to query contests ${this.contentMode}`);
+        }
     }
 }
