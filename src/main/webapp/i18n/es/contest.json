@@ -13,6 +13,7 @@
                 "question": "¿Seguro que quiere eliminar el Concurso {{ id }}?"
             },
             "detail": {
+                "pageTitle": "Detalle Concurso",
                 "title": "Concurso"
             },
             "createDate": "Creación",

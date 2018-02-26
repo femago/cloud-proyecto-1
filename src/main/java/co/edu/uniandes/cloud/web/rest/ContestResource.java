@@ -128,6 +128,20 @@ public class ContestResource {
     }
 
     /**
+     * GET  /contests/uuid/:uuid : get the "uuid" contest.
+     *
+     * @param uuid the uuid of the contest to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the contest, or with status 404 (Not Found)
+     */
+    @GetMapping("/contests/uuid/{uuid}")
+    @Timed
+    public ResponseEntity<Contest> getContestByUUID(@PathVariable String uuid) {
+        log.debug("REST request to get Contest : {}", uuid);
+        Contest contest = contestService.findByUUID(uuid);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(contest));
+    }
+
+    /**
      * DELETE  /contests/:id : delete the "id" contest.
      *
      * @param id the id of the contest to delete

@@ -41,4 +41,6 @@ public interface ContestService {
     void delete(Long id);
 
     Page<Contest> findByCurrentUser(Pageable pageable);
+
+    Contest findByUUID(String uuid);
 }

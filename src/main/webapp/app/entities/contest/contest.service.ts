@@ -38,13 +38,22 @@ export class ContestService {
         });
     }
 
+    findByUUID(uuid: number): Observable<Contest> {
+        return this.http.get(`${this.resourceUrl}/uuid/${uuid}`).map((res: Response) => {
+            const jsonResponse = res.json();
+            return this.convertItemFromServer(jsonResponse);
+        });
+    }
+
     queryOwned(req?: any): Observable<ResponseWrapper> {
+        console.log('llamando concursos por principal');
         const options = createRequestOption(req);
         return this.http.get(`${this.resourceUrl}/principal`, options)
             .map((res: Response) => this.convertResponse(res));
     }
 
     queryPublished(req?: any): Observable<ResponseWrapper> {
+        console.log('llamando todos los concursos');
         const options = createRequestOption(req);
         return this.http.get(this.resourceUrl, options)
             .map((res: Response) => this.convertResponse(res));
