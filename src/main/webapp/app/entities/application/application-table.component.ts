@@ -132,6 +132,17 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
     openFile(contentType, field) {
         return this.dataUtils.openFile(contentType, field);
     }
+
+    downloadVoice() {
+        const tab = window.open();
+        this.applicationService
+            .downloadVoice()
+            .subscribe(data => {
+                const fileUrl = URL.createObjectURL(data);
+                tab.location.href = fileUrl;
+            });
+    }
+
     registerChangeInApplications() {
         this.eventSubscriber = this.eventManager.subscribe('applicationListModification', (response) => this.loadAll());
     }
