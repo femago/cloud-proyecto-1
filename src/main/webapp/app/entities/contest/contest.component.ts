@@ -5,7 +5,7 @@ import {JhiAlertService, JhiDataUtils, JhiEventManager, JhiParseLinks} from 'ng-
 
 import {Contest} from './contest.model';
 import {ContestService} from './contest.service';
-import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
+import {CONTEST_CONTENT_MODE, ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
 
 @Component({
     selector: 'jhi-contest',
@@ -43,22 +43,27 @@ currentAccount: any;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
             this.page = data.pagingParams.page;
             this.previousPage = data.pagingParams.page;
-            this.reverse = data.pagingParams.ascending;
-            this.predicate = data.pagingParams.predicate;
+            this.reverse = false;
+            this.predicate = 'createDate'
 
             this.contentMode = data.contentMode;
             console.log('Data de la ruta', data)
         });
     }
-
+    isOwned() {
+        return this.contentMode === CONTEST_CONTENT_MODE.owned;
+    }
+    isPublished() {
+        return this.contentMode === CONTEST_CONTENT_MODE.published;
+    }
     loadAll() {
         let contestResponse;
-        if (this.contentMode === 'owned') {
+        if (this.isOwned()) {
             contestResponse = this.contestService.queryOwned({
                 page: this.page - 1,
                 size: 50,
                 sort: this.sort()});
-        } else if (this.contentMode === 'published') {
+        } else if (this.isPublished()) {
             contestResponse = this.contestService.queryPublished({
                 page: this.page - 1,
                 size: this.itemsPerPage,

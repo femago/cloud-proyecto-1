@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
 import { JhiPaginationUtil } from 'ng-jhipster';
 
-import { UserRouteAccessService } from '../../shared';
+import {CONTEST_CONTENT_MODE, UserRouteAccessService} from '../../shared';
 import { ContestComponent } from './contest.component';
 import { ContestDetailComponent } from './contest-detail.component';
 import { ContestPopupComponent } from './contest-dialog.component';
@@ -34,7 +34,7 @@ export const contestRoute: Routes = [
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'cloiceApp.contest.home.title',
-            contentMode: 'owned'
+            contentMode: CONTEST_CONTENT_MODE.owned
         },
         canActivate: [UserRouteAccessService]
     }, {
@@ -46,7 +46,7 @@ export const contestRoute: Routes = [
         data: {
             authorities: [],
             pageTitle: 'cloiceApp.contest.home.title',
-            contentMode: 'published'
+            contentMode: CONTEST_CONTENT_MODE.published
         },
         canActivate: [UserRouteAccessService]
     }, {
