@@ -2,6 +2,7 @@ package co.edu.uniandes.cloud.web.rest;
 
 import co.edu.uniandes.cloud.domain.Application;
 import co.edu.uniandes.cloud.service.ApplicationService;
+import co.edu.uniandes.cloud.service.dto.VoiceFileData;
 import co.edu.uniandes.cloud.web.rest.errors.BadRequestAlertException;
 import co.edu.uniandes.cloud.web.rest.util.HeaderUtil;
 import co.edu.uniandes.cloud.web.rest.util.PaginationUtil;
@@ -9,14 +10,17 @@ import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -127,12 +131,55 @@ public class ApplicationResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
+    /**
+     * Public
+     * @param pageable
+     * @param contestId
+     * @return
+     */
     @GetMapping("/applications/contests/{contestId}")
     @Timed
     public ResponseEntity<List<Application>> getApplicationsByContest(Pageable pageable, @PathVariable Long contestId) {
-        log.debug("REST request to get a page of Applications by Contest");
+        log.debug("REST request to get a list of Applications by Contest");
         Page<Application> page = applicationService.findConvertedByContest(pageable, contestId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/applications/contests/" + contestId);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * Private
+     * @param pageable
+     * @param contestId
+     * @return
+     */
+    @GetMapping("/applications/contests/{contestId}/principal")
+    @Timed
+    public ResponseEntity<List<Application>> getApplicationsByContestPrincipal(Pageable pageable, @PathVariable Long contestId) {
+        log.debug("REST request to get a page of Applications by Contest principal");
+        Page<Application> page = applicationService.findByContest(pageable, contestId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/applications/contests/" + contestId + "/principal");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/applications/{id}/voice/original")
+    @Timed
+    public ResponseEntity<Resource> downloadOriginalVoice(@PathVariable Long id) throws IOException {
+        log.debug("REST request to get original voice for Application : {}", id);
+        final VoiceFileData voiceFileData = applicationService.fileOriginalVoice(id);
+        return ResponseEntity.ok()
+            .contentLength(voiceFileData.getContent().contentLength())
+            .contentType(MediaType.parseMediaType(voiceFileData.getContentType()))
+            .body(voiceFileData.getContent());
+    }
+
+    @GetMapping("/applications/{id}/voice/converted")
+    @Timed
+    public ResponseEntity<Resource> downloadConvertedVoice(@PathVariable Long id) throws IOException {
+        log.debug("REST request to get converted voice for Application : {}", id);
+        final VoiceFileData voiceFileData = applicationService.fileConvertedVoice(id);
+        return ResponseEntity.ok()
+            .contentLength(voiceFileData.getContent().contentLength())
+            .contentType(MediaType.parseMediaType(voiceFileData.getContentType()))
+            .body(voiceFileData.getContent());
     }
 }

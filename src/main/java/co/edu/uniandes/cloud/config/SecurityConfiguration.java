@@ -1,8 +1,8 @@
 package co.edu.uniandes.cloud.config;
 
-import co.edu.uniandes.cloud.security.*;
-import co.edu.uniandes.cloud.security.jwt.*;
-
+import co.edu.uniandes.cloud.security.AuthoritiesConstants;
+import co.edu.uniandes.cloud.security.jwt.JWTConfigurer;
+import co.edu.uniandes.cloud.security.jwt.TokenProvider;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -102,6 +102,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/profile-info").permitAll()
             .antMatchers("/api/contests").permitAll()
             .antMatchers("/api/contests/uuid/*").permitAll()
+            .antMatchers("/api/applications/contests/*").permitAll()
+            .antMatchers("/api/applications/*/voice/*").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
