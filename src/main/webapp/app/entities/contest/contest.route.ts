@@ -34,7 +34,7 @@ export const contestRoute: Routes = [
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'cloiceApp.contest.home.title',
-            contentMode: CONTEST_CONTENT_MODE.owned
+            contentMode: CONTEST_CONTENT_MODE.private
         },
         canActivate: [UserRouteAccessService]
     }, {
@@ -46,7 +46,7 @@ export const contestRoute: Routes = [
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'cloiceApp.contest.detail.pageTitle',
-            contentMode: CONTEST_CONTENT_MODE.owned
+            contentMode: CONTEST_CONTENT_MODE.private
         },
         canActivate: [UserRouteAccessService]
     }, {
@@ -58,7 +58,7 @@ export const contestRoute: Routes = [
         data: {
             authorities: [],
             pageTitle: 'cloiceApp.contest.home.title',
-            contentMode: CONTEST_CONTENT_MODE.published
+            contentMode: CONTEST_CONTENT_MODE.public
         }
     }, {
         path: 'contest-open/:id',
@@ -69,7 +69,7 @@ export const contestRoute: Routes = [
         data: {
             authorities: [],
             pageTitle: 'cloiceApp.contest.detail.pageTitle',
-            contentMode: CONTEST_CONTENT_MODE.published
+            contentMode: CONTEST_CONTENT_MODE.public
         }
     },
 ];

@@ -1,1 +1,1 @@
-export const CONTEST_CONTENT_MODE = {owned: 'owned', published: 'published'};
+export const CONTEST_CONTENT_MODE = {private: 'private', public: 'public'};
