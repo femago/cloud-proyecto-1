@@ -5,8 +5,10 @@ import co.edu.uniandes.cloud.domain.Application;
 import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
 import co.edu.uniandes.cloud.repository.ApplicationRepository;
 import co.edu.uniandes.cloud.service.ApplicationService;
+import co.edu.uniandes.cloud.service.dto.VoiceFileData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Instant;
 
 
@@ -116,9 +120,46 @@ public class ApplicationServiceImpl implements ApplicationService {
         applicationRepository.delete(id);
     }
 
+    /**
+     * List converted applications of a contest
+     *
+     * @param pageable
+     * @param contestId
+     * @return
+     */
     @Override
     public Page<Application> findConvertedByContest(Pageable pageable, Long contestId) {
-        log.debug("Request to get all Applications by Contest");
+        log.debug("Request to get Converted Applications by Contest");
         return applicationRepository.findByStatusAndContest_Id(pageable, ApplicationState.CONVERTED, contestId);
     }
+
+    /**
+     * List all applications of a contest
+     *
+     * @param pageable
+     * @param contestId
+     * @return
+     */
+    @Override
+    public Page<Application> findByContest(Pageable pageable, Long contestId) {
+        log.debug("Request to get Converted Applications by Contest");
+        return applicationRepository.findByContest_Id(pageable, contestId);
+    }
+
+    @Override
+    public VoiceFileData fileConvertedVoice(Long id) throws IOException {
+        final Application one = applicationRepository.findOne(id);
+        final Path path = Paths.get(applicationProperties.getFolder().getVoicesArchive().toString(), one.getConvertedRecordLocation());
+        final ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(path));
+        return new VoiceFileData("audio/mp3", byteArrayResource);
+    }
+
+    @Override
+    public VoiceFileData fileOriginalVoice(Long id) throws IOException {
+        final Application one = applicationRepository.findOne(id);
+        final Path path = Paths.get(applicationProperties.getFolder().getVoicesArchive().toString(), one.getOriginalRecordLocation());
+        final ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(path));
+        return new VoiceFileData(one.getOriginalRecordContentType(), byteArrayResource);
+    }
+
 }

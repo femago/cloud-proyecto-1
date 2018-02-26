@@ -1,8 +1,11 @@
 package co.edu.uniandes.cloud.service;
 
 import co.edu.uniandes.cloud.domain.Application;
+import co.edu.uniandes.cloud.service.dto.VoiceFileData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.io.IOException;
 
 /**
  * Service Interface for managing Application.
@@ -41,4 +44,10 @@ public interface ApplicationService {
     void delete(Long id);
 
     Page<Application> findConvertedByContest(Pageable pageable, Long contestId);
+
+    Page<Application> findByContest(Pageable pageable, Long contestId);
+
+    VoiceFileData fileConvertedVoice(Long id) throws IOException;
+
+    VoiceFileData fileOriginalVoice(Long id) throws IOException;
 }

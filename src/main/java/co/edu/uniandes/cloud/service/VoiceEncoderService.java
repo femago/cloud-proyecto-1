@@ -97,6 +97,6 @@ public class VoiceEncoderService {
 
         // Run a one-pass encode
         executor.createJob(builder).run();
-        return convertedPath.toFile();
+        return Paths.get(outputFilename).toFile();
     }
 }

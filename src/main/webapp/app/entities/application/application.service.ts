@@ -46,9 +46,14 @@ export class ApplicationService {
             .map((res: Response) => this.convertResponse(res));
     }
 
-    queryContests(contestId: number, req?: any): Observable<ResponseWrapper> {
+    queryPublicApplicationsByContest(contestId: number, req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
         return this.http.get(`${this.resourceUrl}/contests/${contestId}`, options)
+            .map((res: Response) => this.convertResponse(res));
+    }
+    queryPrivateApplicationsByContest(contestId: number, req?: any): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        return this.http.get(`${this.resourceUrl}/contests/${contestId}/principal`, options)
             .map((res: Response) => this.convertResponse(res));
     }
 

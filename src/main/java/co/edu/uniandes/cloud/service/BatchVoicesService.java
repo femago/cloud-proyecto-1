@@ -31,7 +31,6 @@ public class BatchVoicesService {
             .forEach(this::wrapProcessing);
     }
 
-
     private void wrapProcessing(Application app) {
         try {
             voiceEncoderService.processAppOriginalRecord(app);

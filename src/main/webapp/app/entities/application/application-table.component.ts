@@ -5,7 +5,7 @@ import {JhiAlertService, JhiDataUtils, JhiEventManager, JhiParseLinks} from 'ng-
 
 import {Application} from './application.model';
 import {ApplicationService} from './application.service';
-import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
+import {CONTEST_CONTENT_MODE, ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
 import {Contest} from '../contest/contest.model';
 
 @Component({
@@ -16,6 +16,8 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
 
     @Input()
     contest: Contest;
+    @Input()
+    contentMode: string;
     currentAccount: any;
     applications: Application[];
     error: any;
@@ -58,14 +60,24 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
-        this.applicationService.queryContests(this.contest.id,
-            {page: this.page - 1,
+
+        const rqParams = {
+            page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
+            sort: this.sort()
+        };
+        let applicationsObservable;
+        if (this.isPrivate()) {
+            applicationsObservable = this.applicationService.queryPrivateApplicationsByContest(this.contest.id, rqParams);
+        } else if (this.isPublic()) {
+            applicationsObservable = this.applicationService.queryPublicApplicationsByContest(this.contest.id, rqParams);
+        } else {
+            throw new Error(`Invalid mode to query applications ${this.contentMode}`);
+        }
+        applicationsObservable.subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
-
     }
     loadPage(page: number) {
         if (page !== this.previousPage) {
@@ -132,6 +144,10 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
         return result;
     }
 
+    displayPlayer(applicationRow: Application) {
+        return applicationRow.status.toString() === 'CONVERTED';
+    }
+
     private onSuccess(data, headers) {
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
@@ -141,5 +157,11 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
     }
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+    isPrivate() {
+        return this.contentMode === CONTEST_CONTENT_MODE.private;
+    }
+    isPublic() {
+        return this.contentMode === CONTEST_CONTENT_MODE.public;
     }
 }

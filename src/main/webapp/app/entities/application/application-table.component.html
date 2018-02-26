@@ -43,6 +43,7 @@
                 </td>
                 <td jhiTranslate="{{'cloiceApp.ApplicationState.' + application.status}}">{{application.status}}</td>
                 <td>
+                    <div *ngIf="displayPlayer(application)">
                     <vg-player style="height: 50px; width: 200px; font-size: 12px">
                         <vg-controls>
                             <vg-play-pause style="width: 35px;"></vg-play-pause>
@@ -61,6 +62,7 @@
                             <source *ngFor="let audio of sources" [src]="audio.src" [type]="audio.type">
                         </audio>
                     </vg-player>
+                    </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
