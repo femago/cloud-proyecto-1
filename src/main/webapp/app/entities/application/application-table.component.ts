@@ -33,13 +33,6 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
     previousPage: any;
     reverse: any;
 
-    sources: Array<Object> = [
-            {
-                src: 'http://static.videogular.com/assets/audios/videogular.mp3',
-                type: 'audio/mp3'
-            }
-        ];
-
     constructor(
         private applicationService: ApplicationService,
         private parseLinks: JhiParseLinks,
@@ -133,14 +126,12 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
         return this.dataUtils.openFile(contentType, field);
     }
 
-    downloadVoice() {
-        const tab = window.open();
-        this.applicationService
-            .downloadVoice()
-            .subscribe(data => {
-                const fileUrl = URL.createObjectURL(data);
-                tab.location.href = fileUrl;
-            });
+    downloadVoice(id) {
+        const tab = window.open(this.applicationService.originalVoiceResolver(id));
+    }
+
+    resolveConvertedVoice(id) {
+        return this.applicationService.convertedVoiceResolver(id);
     }
 
     registerChangeInApplications() {
