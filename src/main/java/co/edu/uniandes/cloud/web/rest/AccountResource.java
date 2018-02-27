@@ -1,7 +1,5 @@
 package co.edu.uniandes.cloud.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-
 import co.edu.uniandes.cloud.domain.User;
 import co.edu.uniandes.cloud.repository.UserRepository;
 import co.edu.uniandes.cloud.security.SecurityUtils;
@@ -11,7 +9,7 @@ import co.edu.uniandes.cloud.service.dto.UserDTO;
 import co.edu.uniandes.cloud.web.rest.errors.*;
 import co.edu.uniandes.cloud.web.rest.vm.KeyAndPasswordVM;
 import co.edu.uniandes.cloud.web.rest.vm.ManagedUserVM;
-
+import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.Optional;
 
 /**
  * REST controller for managing the current user's account.
@@ -62,7 +60,8 @@ public class AccountResource {
         userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).ifPresent(u -> {throw new LoginAlreadyUsedException();});
         userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail()).ifPresent(u -> {throw new EmailAlreadyUsedException();});
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
+        //mailService.sendActivationEmail(user);
+        activateAccount(user.getActivationKey());
     }
 
     /**

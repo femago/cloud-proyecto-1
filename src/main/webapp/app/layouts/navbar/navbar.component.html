@@ -18,8 +18,24 @@
                     </span>
                 </a>
             </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="contest-open" (click)="collapseNavbar()">
+                    <span>
+                        <i class="fa fa-microphone" aria-hidden="true"></i>
+                        <span>Publicar Voz</span>
+                    </span>
+                </a>
+            </li>
+            <li *jhiHasAnyAuthority="'ROLE_USER'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="contest" (click)="collapseNavbar()">
+                    <span>
+                        <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.contest">Contest</span>
+                    </span>
+                </a>
+            </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-            <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
                     <span>
                         <i class="fa fa-th-list" aria-hidden="true"></i>
@@ -103,19 +119,6 @@
                     </li>
                 </ul>
             </li>
-            <li ngbDropdown class="nav-item dropdown pointer" *ngIf="languages">
-                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown" *ngIf="languages.length > 1">
-                    <span>
-                        <i class="fa fa-flag" aria-hidden="true"></i>
-                        <span jhiTranslate="global.menu.language">Language</span>
-                    </span>
-                </a>
-                <ul class="dropdown-menu" ngbDropdownMenu *ngIf="languages.length > 1">
-                    <li *ngFor="let language of languages">
-                        <a class="dropdown-item" [jhiActiveMenu]="language" href="javascript:void(0);" (click)="changeLanguage(language);collapseNavbar();">{{language | findLanguageFromKey}}</a>
-                    </li>
-                </ul>
-            </li>
             <li ngbDropdown class="nav-item dropdown pointer" placement="bottom-right" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
                   <span *ngIf="!getImageUrl()">
@@ -129,18 +132,18 @@
                   </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
-                    <li *ngSwitchCase="true">
-                        <a class="dropdown-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.account.settings">Settings</span>
-                        </a>
-                    </li>
-                    <li *ngSwitchCase="true">
-                        <a class="dropdown-item" routerLink="password" routerLinkActive="active" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.account.password">Password</span>
-                        </a>
-                    </li>
+                    <!--<li *ngSwitchCase="true">-->
+                        <!--<a class="dropdown-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">-->
+                            <!--<i class="fa fa-fw fa-wrench" aria-hidden="true"></i>-->
+                            <!--<span jhiTranslate="global.menu.account.settings">Settings</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li *ngSwitchCase="true">-->
+                        <!--<a class="dropdown-item" routerLink="password" routerLinkActive="active" (click)="collapseNavbar()">-->
+                            <!--<i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>-->
+                            <!--<span jhiTranslate="global.menu.account.password">Password</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
                     <li *ngSwitchCase="true">
                         <a class="dropdown-item" (click)="logout()" id="logout">
                             <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
