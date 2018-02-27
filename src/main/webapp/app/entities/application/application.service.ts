@@ -90,11 +90,11 @@ export class ApplicationService {
         return copy;
     }
 
-    downloadVoice(id: number) {
+    originalVoiceResolver(id: number) {
+        return `${this.resourceUrl}/${id}/voice/original`;
+    }
 
-        return this._httpClient.get(`${this.resourceUrl}/${id}/voice/converted`, { responseType: 'blob'})
-            .map(res => {
-                return new Blob([res], { type: 'application/pdf', });
-            });
+    convertedVoiceResolver(id: number) {
+        return `${this.resourceUrl}/${id}/voice/converted`;
     }
 }
