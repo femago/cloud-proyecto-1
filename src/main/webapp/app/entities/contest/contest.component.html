@@ -32,12 +32,12 @@
             <tbody>
             <tr *ngFor="let contest of contests ;trackBy: trackId">
                 <td>
-                    <a *ngIf="contest.logo" (click)="openFile(contest.logoContentType, contest.logo)">
+                    <a *ngIf="contest.logo">
                         <img [src]="'data:' + contest.logoContentType + ';base64,' + contest.logo" style="max-height: 30px;" alt="contest image"/>
                     </a>
                 </td>
-                <td *ngIf="isPrivate()"><a [routerLink]="['../contest', contest.id ]">{{contest.id}}</a></td>
-                <td><a [routerLink]="['../contest', contest.id ]">{{contest.name}}</a></td>
+                <td *ngIf="isPrivate()">{{contest.id}}</td>
+                <td>{{contest.name}}</td>
                 <td>{{contest.createDate | date:'medium'}}</td>
                 <td *ngIf="isPrivate()">{{contest.uuid}}</td>
                 <td>{{contest.startDate | date:'mediumDate'}}</td>
