@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
-import { JhiPaginationUtil } from 'ng-jhipster';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Routes} from '@angular/router';
+import {JhiPaginationUtil} from 'ng-jhipster';
 
-import { UserRouteAccessService } from '../../shared';
-import { ApplicationComponent } from './application.component';
-import { ApplicationDetailComponent } from './application-detail.component';
-import { ApplicationPopupComponent } from './application-dialog.component';
-import { ApplicationDeletePopupComponent } from './application-delete-dialog.component';
+import {UserRouteAccessService} from '../../shared';
+import {ApplicationComponent} from './application.component';
+import {ApplicationDetailComponent} from './application-detail.component';
+import {ApplicationPopupComponent} from './application-dialog.component';
+import {ApplicationDeletePopupComponent} from './application-delete-dialog.component';
 
 @Injectable()
 export class ApplicationResolvePagingParams implements Resolve<any> {
@@ -52,7 +52,7 @@ export const applicationPopupRoute: Routes = [
         path: 'application-new',
         component: ApplicationPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: [],
             pageTitle: 'cloiceApp.application.home.title'
         },
         canActivate: [UserRouteAccessService],
