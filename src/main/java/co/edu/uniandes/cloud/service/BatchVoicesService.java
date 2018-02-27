@@ -3,6 +3,7 @@ package co.edu.uniandes.cloud.service;
 import co.edu.uniandes.cloud.domain.Application;
 import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
 import co.edu.uniandes.cloud.repository.ApplicationRepository;
+import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,10 +17,12 @@ public class BatchVoicesService {
     private final Logger log = LoggerFactory.getLogger(BatchVoicesService.class);
     private final ApplicationRepository applicationRepository;
     private final VoiceEncoderService voiceEncoderService;
+    private MailService mailService;
 
-    public BatchVoicesService(ApplicationRepository applicationRepository, VoiceEncoderService voiceEncoderService) {
+    public BatchVoicesService(ApplicationRepository applicationRepository, VoiceEncoderService voiceEncoderService, MailService mailService) {
         this.applicationRepository = applicationRepository;
         this.voiceEncoderService = voiceEncoderService;
+        this.mailService = mailService;
     }
 
     @Scheduled(fixedRate = 60000)
@@ -34,8 +37,14 @@ public class BatchVoicesService {
     private void wrapProcessing(Application app) {
         try {
             voiceEncoderService.processAppOriginalRecord(app);
+            log.debug("Sending published voice email to '{}'", app.getEmail());
+            mailService.sendStaticEmailFromTemplate(app.getEmail(),
+                "stateless_publishApplication",
+                "application.voice.published.title",
+                ImmutableMap.of("app", app));
         } catch (Exception e) {
-            log.error("Unexpected error processing application voice {}", app.getId());
+            log.error("Unexpected error processing application voice {} {}", app.getId(), e);
         }
     }
+
 }
