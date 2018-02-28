@@ -102,6 +102,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/profile-info").permitAll()
             .antMatchers("/api/contests").permitAll()
             .antMatchers("/api/contests/uuid/*").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/applications/*").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/applications").permitAll()
             .antMatchers("/api/applications/contests/*").permitAll()
             .antMatchers("/api/applications/*/voice/*").permitAll()
             .antMatchers("/api/**").authenticated()

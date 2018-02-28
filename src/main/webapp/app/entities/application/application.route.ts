@@ -44,6 +44,20 @@ export const applicationRoute: Routes = [
             pageTitle: 'cloiceApp.application.home.title'
         },
         canActivate: [UserRouteAccessService]
+    }, {
+        path: 'contest-open/application/:id',
+        component: ApplicationDetailComponent,
+        data: {
+            authorities: [],
+            pageTitle: 'cloiceApp.application.home.title'
+        }
+    }, {
+        path: 'contest/application/:id',
+        component: ApplicationDetailComponent,
+        data: {
+            authorities: [],
+            pageTitle: 'cloiceApp.application.home.title'
+        }
     }
 ];
 
