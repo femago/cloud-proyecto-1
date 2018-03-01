@@ -157,7 +157,14 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public VoiceFileData fileOriginalVoice(Long id) throws IOException {
         final Application one = applicationRepository.findOne(id);
-        final Path path = Paths.get(applicationProperties.getFolder().getVoicesArchive().toString(), one.getOriginalRecordLocation());
+        String actualLocation = "";
+        if (one.getStatus().equals(ApplicationState.IN_PROCESS)) {
+            actualLocation = applicationProperties.getFolder().getVoicesTbp().toString();
+        } else {
+            actualLocation = applicationProperties.getFolder().getVoicesArchive().toString();
+        }
+
+        final Path path = Paths.get(actualLocation, one.getOriginalRecordLocation());
         final ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(path));
         return new VoiceFileData(one.getOriginalRecordContentType(), byteArrayResource);
     }

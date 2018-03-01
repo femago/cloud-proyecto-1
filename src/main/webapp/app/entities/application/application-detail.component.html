@@ -1,9 +1,18 @@
 
 <div *ngIf="application">
-    <h2><span jhiTranslate="cloiceApp.application.detail.title">Application</span> {{application.id}}</h2>
+    <h2>
+        Concurso: {{application.contest?.name}} - Aplicación: {{application.name}} {{application.lastname}}
+        <span class="badge {{displayPlayer()?'badge-success':'badge-warning'}}">
+            <span jhiTranslate="{{'cloiceApp.ApplicationState.' + application.status}}">{{application.status}}</span>
+        </span>
+    </h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="cloiceApp.application.contest">Contest</span></dt>
+        <dd>
+            <span>{{application.contest?.name}}</span>
+        </dd>
         <dt><span jhiTranslate="cloiceApp.application.createDate">Create Date</span></dt>
         <dd>
             <span>{{application.createDate | date:'medium'}}</span>
@@ -20,34 +29,49 @@
         <dd>
             <span>{{application.email}}</span>
         </dd>
-        <dt><span jhiTranslate="cloiceApp.application.originalRecord">Original Record</span></dt>
-        <dd>
-            <div *ngIf="application.originalRecord">
-                <a (click)="openFile(application.originalRecordContentType, application.originalRecord)" jhiTranslate="entity.action.open">open</a>
-                {{application.originalRecordContentType}}, {{byteSize(application.originalRecord)}}
+
+        <div class="container-fluid">
+            <div class="row">
+                <div *ngIf="displayPlayer()" class="col-xsm">
+                    <dt><span>Escuchar</span></dt>
+                    <dd>
+                        <vg-player style="height: 50px; width: 200px; font-size: 12px">
+                            <vg-controls>
+                                <vg-play-pause style="width: 35px;"></vg-play-pause>
+
+                                <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+
+                                <vg-scrub-bar>
+                                    <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                                    <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                                </vg-scrub-bar>
+
+                                <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+                            </vg-controls>
+
+                            <audio #media [vgMedia]="media" id="myAudio" preload="auto">
+                                <source [src]="resolveConvertedVoice(application.id)" [type]="'audio/mp3'">
+                            </audio>
+                        </vg-player>
+                    </dd>
+                </div>
+                <div class="{{displayPlayer()?'col-sm':'col-xsm'}}">
+                    <dt><span jhiTranslate="cloiceApp.application.originalRecord">Original Record</span></dt>
+                    <dd>
+                        <button *ngIf="application.originalRecord"
+                                type="submit"
+                                (click)="downloadVoice(application.id)"
+                                class="btn btn-success btn-lg">
+                            <span class="fa fa-cloud-download"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.download">download</span>
+                        </button>
+                    </dd>
+                </div>
             </div>
-        </dd>
+        </div>
         <dt><span jhiTranslate="cloiceApp.application.notes">Notes</span></dt>
         <dd>
             <span>{{application.notes}}</span>
-        </dd>
-        <dt><span jhiTranslate="cloiceApp.application.originalRecordLocation">Original Record Location</span></dt>
-        <dd>
-            <span>{{application.originalRecordLocation}}</span>
-        </dd>
-        <dt><span jhiTranslate="cloiceApp.application.convertedRecordLocation">Converted Record Location</span></dt>
-        <dd>
-            <span>{{application.convertedRecordLocation}}</span>
-        </dd>
-        <dt><span jhiTranslate="cloiceApp.application.status">Status</span></dt>
-        <dd>
-            <span jhiTranslate="{{'cloiceApp.ApplicationState.' + application.status}}">{{application.status}}</span>
-        </dd>
-        <dt><span jhiTranslate="cloiceApp.application.contest">Contest</span></dt>
-        <dd>
-            <div *ngIf="application.contest">
-                <a [routerLink]="['/contest', application.contest?.id]">{{application.contest?.id}}</a>
-            </div>
         </dd>
     </dl>
 
