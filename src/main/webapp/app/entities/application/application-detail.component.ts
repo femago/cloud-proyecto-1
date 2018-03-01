@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
 
-import { Application } from './application.model';
-import { ApplicationService } from './application.service';
+import {Application} from './application.model';
+import {ApplicationService} from './application.service';
 
 @Component({
     selector: 'jhi-application-detail',
@@ -57,5 +57,17 @@ export class ApplicationDetailComponent implements OnInit, OnDestroy {
             'applicationListModification',
             (response) => this.load(this.application.id)
         );
+    }
+
+    downloadVoice() {
+        const tab = window.open(this.applicationService.originalVoiceResolver(this.application.id));
+    }
+
+    resolveConvertedVoice() {
+        return this.applicationService.convertedVoiceResolver(this.application.id);
+    }
+
+    displayPlayer() {
+        return this.application.status.toString() === 'CONVERTED';
     }
 }
