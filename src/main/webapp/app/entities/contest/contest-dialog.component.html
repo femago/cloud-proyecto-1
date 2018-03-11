@@ -56,7 +56,7 @@
             <div class="input-group">
                 <input id="field_startDate" type="text" class="form-control" name="startDate" ngbDatepicker  #startDateDp="ngbDatepicker" [(ngModel)]="contest.startDate"
                 required/>
-                <span class="input-group-btn">
+                <span class="input-group-append">
                     <button type="button" class="btn btn-secondary" (click)="startDateDp.toggle()"><i class="fa fa-calendar"></i></button>
                 </span>
             </div>
@@ -72,7 +72,7 @@
             <div class="input-group">
                 <input id="field_endDate" type="text" class="form-control" name="endDate" ngbDatepicker  #endDateDp="ngbDatepicker" [(ngModel)]="contest.endDate"
                 required/>
-                <span class="input-group-btn">
+                <span class="input-group-append">
                     <button type="button" class="btn btn-secondary" (click)="endDateDp.toggle()"><i class="fa fa-calendar"></i></button>
                 </span>
             </div>

@@ -5,8 +5,9 @@ import {JhiAlertService, JhiDataUtils, JhiEventManager, JhiParseLinks} from 'ng-
 
 import {Application} from './application.model';
 import {ApplicationService} from './application.service';
-import {CONTEST_CONTENT_MODE, ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
+import {CONTEST_CONTENT_MODE, ITEMS_PER_PAGE, Principal} from '../../shared';
 import {Contest} from '../contest/contest.model';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 
 @Component({
     selector: 'jhi-application-table',
@@ -48,7 +49,7 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
             this.page = data.pagingParams.page;
             this.previousPage = data.pagingParams.page;
             this.reverse = false;
-            this.predicate = 'createDate'
+            this.predicate = 'createDate';
         });
     }
 
@@ -68,8 +69,8 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
             throw new Error(`Invalid mode to query applications ${this.contentMode}`);
         }
         applicationsObservable.subscribe(
-            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-            (res: ResponseWrapper) => this.onError(res.json)
+            (res: HttpResponse<Contest[]>) => this.onSuccess(res.body, res.headers),
+            (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
     loadPage(page: number) {

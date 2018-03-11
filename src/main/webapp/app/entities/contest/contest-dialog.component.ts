@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Response } from '@angular/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,7 +10,6 @@ import { Contest } from './contest.model';
 import { ContestPopupService } from './contest-popup.service';
 import { ContestService } from './contest.service';
 import { User, UserService } from '../../shared';
-import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-contest-dialog',
@@ -39,7 +38,7 @@ export class ContestDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.userService.query()
-            .subscribe((res: ResponseWrapper) => { this.users = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -73,9 +72,9 @@ export class ContestDialogComponent implements OnInit {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<Contest>) {
-        result.subscribe((res: Contest) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
+    private subscribeToSaveResponse(result: Observable<HttpResponse<Contest>>) {
+        result.subscribe((res: HttpResponse<Contest>) =>
+            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
     }
 
     private onSaveSuccess(result: Contest) {

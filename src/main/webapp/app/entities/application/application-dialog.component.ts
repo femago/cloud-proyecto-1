@@ -1,16 +1,15 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Response} from '@angular/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import {Observable} from 'rxjs/Observable';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiAlertService, JhiDataUtils, JhiEventManager} from 'ng-jhipster';
+import { Observable } from 'rxjs/Observable';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
-import {Application} from './application.model';
-import {ApplicationPopupService} from './application-popup.service';
-import {ApplicationService} from './application.service';
-import {Contest, ContestService} from '../contest';
-import {ResponseWrapper} from '../../shared';
+import { Application } from './application.model';
+import { ApplicationPopupService } from './application-popup.service';
+import { ApplicationService } from './application.service';
+import { Contest, ContestService } from '../contest';
 
 @Component({
     selector: 'jhi-application-dialog',
@@ -38,7 +37,7 @@ export class ApplicationDialogComponent implements OnInit, OnDestroy {
         this.isSaving = false;
         this.contest = this.applicationService.currentContest;
         this.contestService.queryPublished()
-            .subscribe((res: ResponseWrapper) => { this.contests = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe((res: HttpResponse<Contest[]>) => { this.contests = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     ngOnDestroy(): void {
@@ -77,9 +76,9 @@ export class ApplicationDialogComponent implements OnInit, OnDestroy {
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<Application>) {
-        result.subscribe((res: Application) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
+    private subscribeToSaveResponse(result: Observable<HttpResponse<Application>>) {
+        result.subscribe((res: HttpResponse<Application>) =>
+            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
     }
 
     private onSaveSuccess(result: Application) {

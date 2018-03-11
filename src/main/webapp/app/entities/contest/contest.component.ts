@@ -1,11 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {JhiAlertService, JhiDataUtils, JhiEventManager, JhiParseLinks} from 'ng-jhipster';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { JhiEventManager, JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
-import {Contest} from './contest.model';
-import {ContestService} from './contest.service';
-import {CONTEST_CONTENT_MODE, ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
+import { Contest } from './contest.model';
+import { ContestService } from './contest.service';
+import { CONTEST_CONTENT_MODE, ITEMS_PER_PAGE, Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-contest',
@@ -47,7 +48,7 @@ currentAccount: any;
             this.predicate = 'createDate';
 
             this.contentMode = data.contentMode;
-            console.log('Data de la ruta', data)
+            console.log('Data de la ruta', data);
         });
     }
     isPrivate() {
@@ -73,8 +74,8 @@ currentAccount: any;
         }
 
         contestResponse.subscribe(
-            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-            (res: ResponseWrapper) => this.onError(res.json)
+            (res: HttpResponse<Contest[]>) => this.onSuccess(res.body, res.headers),
+            (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
     loadPage(page: number) {
