@@ -1,6 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { HttpResponse } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { Contest } from './contest.model';
 import { ContestService } from './contest.service';
@@ -27,26 +28,28 @@ export class ContestPopupService {
             }
 
             if (id) {
-                this.contestService.find(id).subscribe((contest) => {
-                    contest.createDate = this.datePipe
-                        .transform(contest.createDate, 'yyyy-MM-ddTHH:mm:ss');
-                    if (contest.startDate) {
-                        contest.startDate = {
-                            year: contest.startDate.getFullYear(),
-                            month: contest.startDate.getMonth() + 1,
-                            day: contest.startDate.getDate()
-                        };
-                    }
-                    if (contest.endDate) {
-                        contest.endDate = {
-                            year: contest.endDate.getFullYear(),
-                            month: contest.endDate.getMonth() + 1,
-                            day: contest.endDate.getDate()
-                        };
-                    }
-                    this.ngbModalRef = this.contestModalRef(component, contest);
-                    resolve(this.ngbModalRef);
-                });
+                this.contestService.find(id)
+                    .subscribe((contestResponse: HttpResponse<Contest>) => {
+                        const contest: Contest = contestResponse.body;
+                        contest.createDate = this.datePipe
+                            .transform(contest.createDate, 'yyyy-MM-ddTHH:mm:ss');
+                        if (contest.startDate) {
+                            contest.startDate = {
+                                year: contest.startDate.getFullYear(),
+                                month: contest.startDate.getMonth() + 1,
+                                day: contest.startDate.getDate()
+                            };
+                        }
+                        if (contest.endDate) {
+                            contest.endDate = {
+                                year: contest.endDate.getFullYear(),
+                                month: contest.endDate.getMonth() + 1,
+                                day: contest.endDate.getDate()
+                            };
+                        }
+                        this.ngbModalRef = this.contestModalRef(component, contest);
+                        resolve(this.ngbModalRef);
+                    });
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {

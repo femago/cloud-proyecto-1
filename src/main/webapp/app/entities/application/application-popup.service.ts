@@ -1,6 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { HttpResponse } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { Application } from './application.model';
 import { ApplicationService } from './application.service';
@@ -27,12 +28,14 @@ export class ApplicationPopupService {
             }
 
             if (id) {
-                this.applicationService.find(id).subscribe((application) => {
-                    application.createDate = this.datePipe
-                        .transform(application.createDate, 'yyyy-MM-ddTHH:mm:ss');
-                    this.ngbModalRef = this.applicationModalRef(component, application);
-                    resolve(this.ngbModalRef);
-                });
+                this.applicationService.find(id)
+                    .subscribe((applicationResponse: HttpResponse<Application>) => {
+                        const application: Application = applicationResponse.body;
+                        application.createDate = this.datePipe
+                            .transform(application.createDate, 'yyyy-MM-ddTHH:mm:ss');
+                        this.ngbModalRef = this.applicationModalRef(component, application);
+                        resolve(this.ngbModalRef);
+                    });
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
