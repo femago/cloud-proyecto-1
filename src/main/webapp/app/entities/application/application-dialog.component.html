@@ -1,0 +1,134 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myApplicationLabel" jhiTranslate="cloiceApp.application.home.createOrEditLabel">Create or edit a Application</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!application.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="application.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cloiceApp.application.createDate" for="field_createDate">Create Date</label>
+            <div class="d-flex">
+                <input id="field_createDate" type="datetime-local" class="form-control" name="createDate" [(ngModel)]="application.createDate"
+                required/>
+            </div>
+            <div [hidden]="!(editForm.controls.createDate?.dirty && editForm.controls.createDate?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.createDate?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.createDate?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cloiceApp.application.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="application.name" required/>
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cloiceApp.application.lastname" for="field_lastname">Lastname</label>
+            <input type="text" class="form-control" name="lastname" id="field_lastname"
+                [(ngModel)]="application.lastname" required/>
+            <div [hidden]="!(editForm.controls.lastname?.dirty && editForm.controls.lastname?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.lastname?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cloiceApp.application.email" for="field_email">Email</label>
+            <input type="text" class="form-control" name="email" id="field_email"
+                [(ngModel)]="application.email" required/>
+            <div [hidden]="!(editForm.controls.email?.dirty && editForm.controls.email?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.email?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cloiceApp.application.originalRecord" for="field_originalRecord">Original Record</label>
+            <div>
+                <div *ngIf="application.originalRecord" class="form-text text-danger clearfix">
+                    <a class="pull-left" (click)="openFile(application.originalRecordContentType, application.originalRecord)" jhiTranslate="entity.action.open">open</a><br>
+                    <span class="pull-left">{{application.originalRecordContentType}}, {{byteSize(application.originalRecord)}}</span>
+                    <button type="button" (click)="application.originalRecord=null;application.originalRecordContentType=null;"
+                            class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="file_originalRecord" (change)="setFileData($event, application, 'originalRecord', false)" jhiTranslate="entity.action.addblob"/>
+            </div>
+            <input type="hidden" class="form-control" name="originalRecord" id="field_originalRecord"
+                [(ngModel)]="application.originalRecord" required/>
+            <input type="hidden" class="form-control" name="originalRecordContentType" id="field_originalRecordContentType"
+                [(ngModel)]="application.originalRecordContentType" />
+            <div [hidden]="!(editForm.controls.originalRecord?.dirty && editForm.controls.originalRecord?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.originalRecord?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cloiceApp.application.notes" for="field_notes">Notes</label>
+            <input type="text" class="form-control" name="notes" id="field_notes"
+                [(ngModel)]="application.notes" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cloiceApp.application.originalRecordLocation" for="field_originalRecordLocation">Original Record Location</label>
+            <input type="text" class="form-control" name="originalRecordLocation" id="field_originalRecordLocation"
+                [(ngModel)]="application.originalRecordLocation" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cloiceApp.application.convertedRecordLocation" for="field_convertedRecordLocation">Converted Record Location</label>
+            <input type="text" class="form-control" name="convertedRecordLocation" id="field_convertedRecordLocation"
+                [(ngModel)]="application.convertedRecordLocation" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cloiceApp.application.status" for="field_status">Status</label>
+            <select class="form-control" name="status" [(ngModel)]="application.status" id="field_status"  required>
+                <option value="IN_PROCESS">{{'cloiceApp.ApplicationState.IN_PROCESS' | translate}}</option>
+                <option value="CONVERTED">{{'cloiceApp.ApplicationState.CONVERTED' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.status?.dirty && editForm.controls.status?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.status?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cloiceApp.application.contest" for="field_contest">Contest</label>
+            <select class="form-control" id="field_contest" name="contest" [(ngModel)]="application.contest" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="contestOption.id === application.contest?.id ? application.contest : contestOption" *ngFor="let contestOption of contests; trackBy: trackContestById">{{contestOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
