@@ -1,0 +1,67 @@
+
+<div *ngIf="contest">
+    <h2><span jhiTranslate="cloiceApp.contest.detail.title">Contest</span> {{contest.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="cloiceApp.contest.createDate">Create Date</span></dt>
+        <dd>
+            <span>{{contest.createDate | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="cloiceApp.contest.name">Name</span></dt>
+        <dd>
+            <span>{{contest.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="cloiceApp.contest.logo">Logo</span></dt>
+        <dd>
+            <div *ngIf="contest.logo">
+                <a (click)="openFile(contest.logoContentType, contest.logo)">
+                    <img [src]="'data:' + contest.logoContentType + ';base64,' + contest.logo" style="max-width: 100%;" alt="contest image"/>
+                </a>
+                {{contest.logoContentType}}, {{byteSize(contest.logo)}}
+            </div>
+        </dd>
+        <dt><span jhiTranslate="cloiceApp.contest.uuid">Uuid</span></dt>
+        <dd>
+            <span>{{contest.uuid}}</span>
+        </dd>
+        <dt><span jhiTranslate="cloiceApp.contest.startDate">Start Date</span></dt>
+        <dd>
+            <span>{{contest.startDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="cloiceApp.contest.endDate">End Date</span></dt>
+        <dd>
+            <span>{{contest.endDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="cloiceApp.contest.price">Price</span></dt>
+        <dd>
+            <span>{{contest.price}}</span>
+        </dd>
+        <dt><span jhiTranslate="cloiceApp.contest.script">Script</span></dt>
+        <dd>
+            <span>{{contest.script}}</span>
+        </dd>
+        <dt><span jhiTranslate="cloiceApp.contest.notes">Notes</span></dt>
+        <dd>
+            <span>{{contest.notes}}</span>
+        </dd>
+        <dt><span jhiTranslate="cloiceApp.contest.user">User</span></dt>
+        <dd>
+            {{contest.user?.login}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'contest/'+ contest.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

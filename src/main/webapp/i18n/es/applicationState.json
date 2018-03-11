@@ -1,0 +1,9 @@
+{
+    "cloiceApp": {
+        "ApplicationState" : {
+            "null": "",
+            "IN_PROCESS": "IN_PROCESS",
+            "CONVERTED": "CONVERTED"
+        }
+    }
+}

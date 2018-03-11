@@ -1,0 +1,31 @@
+{
+    "cloiceApp": {
+        "contest" : {
+            "home": {
+                "title": "Contests",
+                "createLabel": "Crear nuevo Contest",
+                "createOrEditLabel": "Crear o editar Contest"
+            },
+            "created": "Un nuevo Contest ha sido creado con el identificador {{ param }}",
+            "updated": "Un Contest ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Contest ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Contest {{ id }}?"
+            },
+            "detail": {
+                "title": "Contest"
+            },
+            "createDate": "Create Date",
+            "name": "Name",
+            "logo": "Logo",
+            "uuid": "Uuid",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "price": "Price",
+            "script": "Script",
+            "notes": "Notes",
+            "application": "Application",
+            "user": "User"
+        }
+    }
+}
