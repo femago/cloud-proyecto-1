@@ -1,9 +1,10 @@
-import {AfterViewInit, Component, ElementRef, OnInit, Renderer} from '@angular/core';
-import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {JhiLanguageService} from 'ng-jhipster';
+import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { JhiLanguageService } from 'ng-jhipster';
 
-import {Register} from './register.service';
-import {EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE, LoginModalService} from '../../shared';
+import { Register } from './register.service';
+import { LoginModalService, EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from '../../shared';
 
 @Component({
     selector: 'jhi-register',
@@ -60,11 +61,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         this.modalRef = this.loginModalService.open();
     }
 
-    private processError(response) {
+    private processError(response: HttpErrorResponse) {
         this.success = null;
-        if (response.status === 400 && response.json().type === LOGIN_ALREADY_USED_TYPE) {
+        if (response.status === 400 && response.error.type === LOGIN_ALREADY_USED_TYPE) {
             this.errorUserExists = 'ERROR';
-        } else if (response.status === 400 && response.json().type === EMAIL_ALREADY_USED_TYPE) {
+        } else if (response.status === 400 && response.error.type === EMAIL_ALREADY_USED_TYPE) {
             this.errorEmailExists = 'ERROR';
         } else {
             this.error = 'ERROR';

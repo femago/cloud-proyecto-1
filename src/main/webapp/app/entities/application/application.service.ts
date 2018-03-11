@@ -1,12 +1,14 @@
-import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import {SERVER_API_URL} from '../../app.constants';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { SERVER_API_URL } from '../../app.constants';
 
-import {JhiDateUtils} from 'ng-jhipster';
+import { JhiDateUtils } from 'ng-jhipster';
 
-import {Application} from './application.model';
-import {BaseEntity, createRequestOption, ResponseWrapper} from '../../shared';
+import { Application } from './application.model';
+import { BaseEntity, createRequestOption } from '../../shared';
+
+export type EntityResponseType = HttpResponse<Application>;
 
 @Injectable()
 export class ApplicationService {
@@ -15,69 +17,68 @@ export class ApplicationService {
 
     currentContest: BaseEntity = null;
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
+    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
-    create(application: Application): Observable<Application> {
+    create(application: Application): Observable<EntityResponseType> {
         const copy = this.convert(application);
-        return this.http.post(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+        return this.http.post<Application>(this.resourceUrl, copy, { observe: 'response' })
+            .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    update(application: Application): Observable<Application> {
+    update(application: Application): Observable<EntityResponseType> {
         const copy = this.convert(application);
-        return this.http.put(this.resourceUrl, copy).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+        return this.http.put<Application>(this.resourceUrl, copy, { observe: 'response' })
+            .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    find(id: number): Observable<Application> {
-        return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer(jsonResponse);
-        });
+    find(id: number): Observable<EntityResponseType> {
+        return this.http.get<Application>(`${this.resourceUrl}/${id}`, { observe: 'response'})
+            .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(req?: any): Observable<HttpResponse<Application[]>> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
-            .map((res: Response) => this.convertResponse(res));
+        return this.http.get<Application[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .map((res: HttpResponse<Application[]>) => this.convertArrayResponse(res));
     }
 
-    queryPublicApplicationsByContest(contestId: number, req?: any): Observable<ResponseWrapper> {
+    queryPublicApplicationsByContest(contestId: number, req?: any): Observable<HttpResponse<Application[]>> {
         const options = createRequestOption(req);
-        return this.http.get(`${this.resourceUrl}/contests/${contestId}`, options)
-            .map((res: Response) => this.convertResponse(res));
+        return this.http.get(`${this.resourceUrl}/contests/${contestId}`, { params: options, observe: 'response' })
+            .map((res: HttpResponse<Application[]>) => this.convertArrayResponse(res));
     }
-    queryPrivateApplicationsByContest(contestId: number, req?: any): Observable<ResponseWrapper> {
+    queryPrivateApplicationsByContest(contestId: number, req?: any): Observable<HttpResponse<Application[]>> {
         const options = createRequestOption(req);
-        return this.http.get(`${this.resourceUrl}/contests/${contestId}/principal`, options)
-            .map((res: Response) => this.convertResponse(res));
+        return this.http.get(`${this.resourceUrl}/contests/${contestId}/principal`, { params: options, observe: 'response' })
+            .map((res: HttpResponse<Application[]>) => this.convertArrayResponse(res));
     }
 
-    delete(id: number): Observable<Response> {
-        return this.http.delete(`${this.resourceUrl}/${id}`);
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    private convertResponse(res: Response): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
+    private convertResponse(res: EntityResponseType): EntityResponseType {
+        const body: Application = this.convertItemFromServer(res.body);
+        return res.clone({body});
+    }
+
+    private convertArrayResponse(res: HttpResponse<Application[]>): HttpResponse<Application[]> {
+        const jsonResponse: Application[] = res.body;
+        const body: Application[] = [];
         for (let i = 0; i < jsonResponse.length; i++) {
-            result.push(this.convertItemFromServer(jsonResponse[i]));
+            body.push(this.convertItemFromServer(jsonResponse[i]));
         }
-        return new ResponseWrapper(res.headers, result, res.status);
+        return res.clone({body});
     }
 
     /**
      * Convert a returned JSON object to Application.
      */
-    private convertItemFromServer(json: any): Application {
-        const entity: Application = Object.assign(new Application(), json);
-        entity.createDate = this.dateUtils
-            .convertDateTimeFromServer(json.createDate);
-        return entity;
+    private convertItemFromServer(application: Application): Application {
+        const copy: Application = Object.assign({}, application);
+        copy.createDate = this.dateUtils
+            .convertDateTimeFromServer(application.createDate);
+        return copy;
     }
 
     /**
