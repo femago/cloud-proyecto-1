@@ -81,7 +81,7 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail:
-        from: cloice@localhost
+        from: f.martinez2@uniandes.edu.co
     swagger:
         default-include-pattern: /api/.*
         title: cloice API

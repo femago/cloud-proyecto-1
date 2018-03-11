@@ -6,12 +6,14 @@ import co.edu.uniandes.cloud.repository.ApplicationRepository;
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Profile("cloice-mono")
 public class BatchVoicesService {
 
     private final Logger log = LoggerFactory.getLogger(BatchVoicesService.class);

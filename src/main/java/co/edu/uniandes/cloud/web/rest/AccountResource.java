@@ -185,4 +185,11 @@ public class AccountResource {
             password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH &&
             password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH;
     }
+
+    @GetMapping("/email")
+    @Timed
+    public void testEmail() {
+        mailService.sendStaticEmailFromTemplate(
+            "f.martinez2@uniandes.edu.co", "stateless_publishApplication", "application.voice.published.title", null);
+    }
 }
