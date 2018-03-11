@@ -12,6 +12,7 @@ import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.nio.file.Paths;
 
 @Service
 @Transactional
+@Profile("cloice-mono")
 public class VoiceEncoderService {
 
     public static final String CONVERTED_VOICE_MARKER = "_cnvrt_";
@@ -38,8 +40,8 @@ public class VoiceEncoderService {
     public VoiceEncoderService(ApplicationRepository applicationRepository, ApplicationProperties applicationProperties) throws IOException {
         this.applicationRepository = applicationRepository;
         this.applicationProperties = applicationProperties;
-        this.ffmpeg = new FFmpeg("C:/dev/ffmpeg-3.4.2/bin/ffmpeg.exe");
-        this.ffprobe = new FFprobe("C:/dev/ffmpeg-3.4.2/bin/ffprobe.exe");
+        this.ffmpeg = new FFmpeg("C:/development/ffmpeg-3.4.2/bin/ffmpeg.exe");
+        this.ffprobe = new FFprobe("C:/development/ffmpeg-3.4.2/bin/ffprobe.exe");
     }
 
     public void processAppOriginalRecord(Application app) {
