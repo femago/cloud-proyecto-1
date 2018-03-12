@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_WORKER;
+
 @Service
-@Profile("cloice-mono")
+@Profile(CLOICE_PROFILE_WORKER)
 public class BatchVoicesService {
 
     private final Logger log = LoggerFactory.getLogger(BatchVoicesService.class);

@@ -1,5 +1,9 @@
 FROM openjdk:8-jre-alpine
 
+RUN set -x \
+    && apk update \
+    && apk add ffmpeg
+
 ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     JHIPSTER_SLEEP=0 \
     JAVA_OPTS=""
