@@ -107,5 +107,5 @@ jhipster:
 
 application:
     folder:
-        voices-tbp: ./cloice/voices/tbp
-        voices-archive: ./cloice/voices/archive
+        voices-tbp: ./shared/cloice/voices/tbp
+        voices-archive: ./shared/cloice/voices/archive
