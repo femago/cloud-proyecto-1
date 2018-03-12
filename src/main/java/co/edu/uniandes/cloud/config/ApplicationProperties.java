@@ -17,6 +17,8 @@ import java.nio.file.Paths;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
+    public static final String CLOICE_PROFILE_WORKER = "worker";
+
     private final Folder folder = new Folder();
 
     public Folder getFolder() {

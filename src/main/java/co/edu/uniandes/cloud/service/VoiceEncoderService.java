@@ -22,9 +22,11 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_WORKER;
+
 @Service
 @Transactional
-@Profile("cloice-mono")
+@Profile(CLOICE_PROFILE_WORKER)
 public class VoiceEncoderService {
 
     public static final String CONVERTED_VOICE_MARKER = "_cnvrt_";
@@ -40,8 +42,8 @@ public class VoiceEncoderService {
     public VoiceEncoderService(ApplicationRepository applicationRepository, ApplicationProperties applicationProperties) throws IOException {
         this.applicationRepository = applicationRepository;
         this.applicationProperties = applicationProperties;
-        this.ffmpeg = new FFmpeg("C:/development/ffmpeg-3.4.2/bin/ffmpeg.exe");
-        this.ffprobe = new FFprobe("C:/development/ffmpeg-3.4.2/bin/ffprobe.exe");
+        this.ffmpeg = new FFmpeg();
+        this.ffprobe = new FFprobe();
     }
 
     public void processAppOriginalRecord(Application app) {
