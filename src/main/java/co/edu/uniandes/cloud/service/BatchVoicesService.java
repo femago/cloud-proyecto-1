@@ -22,6 +22,7 @@ public class BatchVoicesService {
     private final ApplicationRepository applicationRepository;
     private final VoiceEncoderService voiceEncoderService;
     private MailService mailService;
+    private int count;
 
     public BatchVoicesService(ApplicationRepository applicationRepository, VoiceEncoderService voiceEncoderService, MailService mailService) {
         this.applicationRepository = applicationRepository;
@@ -31,6 +32,7 @@ public class BatchVoicesService {
 
     @Scheduled(fixedRate = 60000)
     public void processPendingVoices() {
+        count = 0;
         log.info("Start encoding pending applications");
         final List<Application> statusInProcess = applicationRepository.findByStatusEquals(ApplicationState.IN_PROCESS);
         statusInProcess.stream()
@@ -40,6 +42,7 @@ public class BatchVoicesService {
 
     private void wrapProcessing(Application app) {
         try {
+            log.info("Processed {}", count);
             voiceEncoderService.processAppOriginalRecord(app);
             log.debug("Sending published voice email to '{}'", app.getEmail());
             mailService.sendStaticEmailFromTemplate(app.getEmail(),
@@ -49,6 +52,7 @@ public class BatchVoicesService {
         } catch (Exception e) {
             log.error("Unexpected error processing application voice {} {}", app.getId(), e);
         }
+        count++;
     }
 
 }
