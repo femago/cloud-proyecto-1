@@ -5,7 +5,7 @@ import {JhiAlertService, JhiDataUtils, JhiEventManager, JhiParseLinks} from 'ng-
 
 import {Application} from './application.model';
 import {ApplicationService} from './application.service';
-import {CONTEST_CONTENT_MODE, ITEMS_PER_PAGE, Principal} from '../../shared';
+import {CONTEST_CONTENT_MODE, ITEMS_PER_PAGE} from '../../shared';
 import {Contest} from '../contest/contest.model';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 
@@ -19,7 +19,6 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
     contest: Contest;
     @Input()
     contentMode: string;
-    currentAccount: any;
     applications: Application[];
     error: any;
     success: any;
@@ -38,7 +37,6 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
         private applicationService: ApplicationService,
         private parseLinks: JhiParseLinks,
         private jhiAlertService: JhiAlertService,
-        private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private dataUtils: JhiDataUtils,
         private router: Router,
@@ -100,9 +98,6 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
-        });
         this.registerChangeInApplications();
     }
 
