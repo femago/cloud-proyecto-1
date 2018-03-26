@@ -1,12 +1,11 @@
 package co.edu.uniandes.cloud.web.rest;
 
 import co.edu.uniandes.cloud.CloiceApp;
-
 import co.edu.uniandes.cloud.domain.Application;
-import co.edu.uniandes.cloud.repository.ApplicationRepository;
+import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
+import co.edu.uniandes.cloud.repository.jpa.ApplicationJpaRepository;
 import co.edu.uniandes.cloud.service.ApplicationService;
 import co.edu.uniandes.cloud.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,8 +31,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
 /**
  * Test class for the ApplicationResource REST controller.
  *
@@ -73,7 +70,7 @@ public class ApplicationResourceIntTest {
     private static final ApplicationState UPDATED_STATUS = ApplicationState.CONVERTED;
 
     @Autowired
-    private ApplicationRepository applicationRepository;
+    private ApplicationJpaRepository applicationRepository;
 
     @Autowired
     private ApplicationService applicationService;
@@ -164,7 +161,7 @@ public class ApplicationResourceIntTest {
         int databaseSizeBeforeCreate = applicationRepository.findAll().size();
 
         // Create the Application with an existing ID
-        application.setId(1L);
+        application.setId("1");
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restApplicationMockMvc.perform(post("/api/applications")
@@ -295,7 +292,7 @@ public class ApplicationResourceIntTest {
         restApplicationMockMvc.perform(get("/api/applications?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(application.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(application.getId().toString())))
             .andExpect(jsonPath("$.[*].createDate").value(hasItem(DEFAULT_CREATE_DATE.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].lastname").value(hasItem(DEFAULT_LASTNAME.toString())))
@@ -318,7 +315,7 @@ public class ApplicationResourceIntTest {
         restApplicationMockMvc.perform(get("/api/applications/{id}", application.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(application.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(application.getId().toString()))
             .andExpect(jsonPath("$.createDate").value(DEFAULT_CREATE_DATE.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.lastname").value(DEFAULT_LASTNAME.toString()))
@@ -425,11 +422,11 @@ public class ApplicationResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Application.class);
         Application application1 = new Application();
-        application1.setId(1L);
+        application1.setId("1");
         Application application2 = new Application();
         application2.setId(application1.getId());
         assertThat(application1).isEqualTo(application2);
-        application2.setId(2L);
+        application2.setId("2");
         assertThat(application1).isNotEqualTo(application2);
         application1.setId(null);
         assertThat(application1).isNotEqualTo(application2);

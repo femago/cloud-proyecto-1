@@ -1,13 +1,11 @@
 package co.edu.uniandes.cloud.web.rest;
 
 import co.edu.uniandes.cloud.CloiceApp;
-
 import co.edu.uniandes.cloud.domain.Contest;
 import co.edu.uniandes.cloud.domain.User;
-import co.edu.uniandes.cloud.repository.ContestRepository;
+import co.edu.uniandes.cloud.repository.jpa.ContestJpaRepository;
 import co.edu.uniandes.cloud.service.ContestService;
 import co.edu.uniandes.cloud.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,8 +23,8 @@ import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -76,7 +74,7 @@ public class ContestResourceIntTest {
     private static final String UPDATED_NOTES = "BBBBBBBBBB";
 
     @Autowired
-    private ContestRepository contestRepository;
+    private ContestJpaRepository contestRepository;
 
     @Autowired
     private ContestService contestService;
@@ -172,7 +170,7 @@ public class ContestResourceIntTest {
         int databaseSizeBeforeCreate = contestRepository.findAll().size();
 
         // Create the Contest with an existing ID
-        contest.setId(1L);
+        contest.setId("1");
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restContestMockMvc.perform(post("/api/contests")
@@ -321,7 +319,7 @@ public class ContestResourceIntTest {
         restContestMockMvc.perform(get("/api/contests?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(contest.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(contest.getId().toString())))
             .andExpect(jsonPath("$.[*].createDate").value(hasItem(DEFAULT_CREATE_DATE.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].logoContentType").value(hasItem(DEFAULT_LOGO_CONTENT_TYPE)))
@@ -344,7 +342,7 @@ public class ContestResourceIntTest {
         restContestMockMvc.perform(get("/api/contests/{id}", contest.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(contest.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(contest.getId().toString()))
             .andExpect(jsonPath("$.createDate").value(DEFAULT_CREATE_DATE.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.logoContentType").value(DEFAULT_LOGO_CONTENT_TYPE))
@@ -451,11 +449,11 @@ public class ContestResourceIntTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Contest.class);
         Contest contest1 = new Contest();
-        contest1.setId(1L);
+        contest1.setId("1");
         Contest contest2 = new Contest();
         contest2.setId(contest1.getId());
         assertThat(contest1).isEqualTo(contest2);
-        contest2.setId(2L);
+        contest2.setId("2");
         assertThat(contest1).isNotEqualTo(contest2);
         contest1.setId(null);
         assertThat(contest1).isNotEqualTo(contest2);

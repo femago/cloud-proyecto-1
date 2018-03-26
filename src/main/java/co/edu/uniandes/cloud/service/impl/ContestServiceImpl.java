@@ -1,15 +1,17 @@
 package co.edu.uniandes.cloud.service.impl;
 
+import co.edu.uniandes.cloud.domain.Contest;
 import co.edu.uniandes.cloud.domain.User;
-import co.edu.uniandes.cloud.repository.UserRepository;
+import co.edu.uniandes.cloud.repository.jpa.ContestJpaRepository;
+import co.edu.uniandes.cloud.repository.jpa.UserRepository;
 import co.edu.uniandes.cloud.security.SecurityUtils;
 import co.edu.uniandes.cloud.service.ContestService;
-import co.edu.uniandes.cloud.domain.Contest;
-import co.edu.uniandes.cloud.repository.ContestRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,10 +28,10 @@ public class ContestServiceImpl implements ContestService {
 
     private final Logger log = LoggerFactory.getLogger(ContestServiceImpl.class);
 
-    private final ContestRepository contestRepository;
+    private final ContestJpaRepository contestRepository;
     private final UserRepository userRepository;
 
-    public ContestServiceImpl(ContestRepository contestRepository, UserRepository userRepository) {
+    public ContestServiceImpl(ContestJpaRepository contestRepository, UserRepository userRepository) {
         this.contestRepository = contestRepository;
         this.userRepository = userRepository;
     }
@@ -70,7 +72,7 @@ public class ContestServiceImpl implements ContestService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Contest findOne(Long id) {
+    public Contest findOne(String id) {
         log.debug("Request to get Contest : {}", id);
         return contestRepository.findOne(id);
     }
@@ -81,15 +83,16 @@ public class ContestServiceImpl implements ContestService {
      * @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         log.debug("Request to delete Contest : {}", id);
         contestRepository.delete(id);
     }
 
     @Override
     public Page<Contest> findByCurrentUser(Pageable pageable) {
-        log.debug("Request to get all Contest by User");
-        return contestRepository.findByUserIsCurrentUser(pageable);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.debug("Request to get all Contest by User {}",authentication.getName());
+        return contestRepository.findByUser_Login(pageable, authentication.getName());
     }
 
     @Override

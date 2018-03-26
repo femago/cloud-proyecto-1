@@ -1,7 +1,7 @@
 package co.edu.uniandes.cloud.security;
 
 import co.edu.uniandes.cloud.domain.User;
-import co.edu.uniandes.cloud.repository.UserRepository;
+import co.edu.uniandes.cloud.repository.jpa.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**

@@ -1,9 +1,8 @@
-package co.edu.uniandes.cloud.repository;
+package co.edu.uniandes.cloud.repository.jpa;
 
 import co.edu.uniandes.cloud.config.Constants;
 import co.edu.uniandes.cloud.config.audit.AuditEventConverter;
 import co.edu.uniandes.cloud.domain.PersistentAuditEvent;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.audit.AuditEvent;
@@ -28,7 +27,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
     /**
      * Should be the same as in Liquibase migration.
      */
-    protected static final int EVENT_DATA_COLUMN_MAX_LENGTH = 255;
+    public static final int EVENT_DATA_COLUMN_MAX_LENGTH = 255;
 
     private final PersistenceAuditEventRepository persistenceAuditEventRepository;
 

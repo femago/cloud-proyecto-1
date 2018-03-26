@@ -1,11 +1,11 @@
 package co.edu.uniandes.cloud.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import co.edu.uniandes.cloud.domain.Contest;
 import co.edu.uniandes.cloud.service.ContestService;
 import co.edu.uniandes.cloud.web.rest.errors.BadRequestAlertException;
 import co.edu.uniandes.cloud.web.rest.util.HeaderUtil;
 import co.edu.uniandes.cloud.web.rest.util.PaginationUtil;
+import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,7 +119,7 @@ public class ContestResource {
      */
     @GetMapping("/contests/{id}")
     @Timed
-    public ResponseEntity<Contest> getContest(@PathVariable Long id) {
+    public ResponseEntity<Contest> getContest(@PathVariable String id) {
         log.debug("REST request to get Contest : {}", id);
         Contest contest = contestService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(contest));
@@ -149,7 +147,7 @@ public class ContestResource {
      */
     @DeleteMapping("/contests/{id}")
     @Timed
-    public ResponseEntity<Void> deleteContest(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteContest(@PathVariable String id) {
         log.debug("REST request to delete Contest : {}", id);
         contestService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

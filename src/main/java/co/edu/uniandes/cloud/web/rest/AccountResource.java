@@ -1,7 +1,7 @@
 package co.edu.uniandes.cloud.web.rest;
 
 import co.edu.uniandes.cloud.domain.User;
-import co.edu.uniandes.cloud.repository.UserRepository;
+import co.edu.uniandes.cloud.repository.jpa.UserRepository;
 import co.edu.uniandes.cloud.security.SecurityUtils;
 import co.edu.uniandes.cloud.service.MailService;
 import co.edu.uniandes.cloud.service.UserService;

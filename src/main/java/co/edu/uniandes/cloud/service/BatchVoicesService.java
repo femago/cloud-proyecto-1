@@ -2,7 +2,7 @@ package co.edu.uniandes.cloud.service;
 
 import co.edu.uniandes.cloud.domain.Application;
 import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
-import co.edu.uniandes.cloud.repository.ApplicationRepository;
+import co.edu.uniandes.cloud.repository.def.ApplicationRepository;
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

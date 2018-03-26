@@ -2,7 +2,6 @@ package co.edu.uniandes.cloud.config;
 
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.liquibase.AsyncSpringLiquibase;
-
 import liquibase.integration.spring.SpringLiquibase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,7 @@ import java.lang.reflect.Method;
 import java.sql.SQLException;
 
 @Configuration
-@EnableJpaRepositories("co.edu.uniandes.cloud.repository")
+@EnableJpaRepositories("co.edu.uniandes.cloud.repository.jpa")
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
 public class DatabaseConfiguration {

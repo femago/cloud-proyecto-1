@@ -3,7 +3,7 @@ package co.edu.uniandes.cloud.service.impl;
 import co.edu.uniandes.cloud.config.ApplicationProperties;
 import co.edu.uniandes.cloud.domain.Application;
 import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
-import co.edu.uniandes.cloud.repository.ApplicationRepository;
+import co.edu.uniandes.cloud.repository.jpa.ApplicationJpaRepository;
 import co.edu.uniandes.cloud.service.ApplicationService;
 import co.edu.uniandes.cloud.service.dto.VoiceFileData;
 import org.slf4j.Logger;
@@ -34,10 +34,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     public static final String ORIGINAL_VOICE_MARKER = "_orig_";
     private final Logger log = LoggerFactory.getLogger(ApplicationServiceImpl.class);
 
-    private final ApplicationRepository applicationRepository;
+    private final ApplicationJpaRepository applicationRepository;
     private final ApplicationProperties applicationProperties;
 
-    public ApplicationServiceImpl(ApplicationRepository applicationRepository,
+    public ApplicationServiceImpl(ApplicationJpaRepository applicationRepository,
                                   ApplicationProperties applicationProperties) {
         this.applicationRepository = applicationRepository;
         this.applicationProperties = applicationProperties;
@@ -104,7 +104,7 @@ public class ApplicationServiceImpl implements ApplicationService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Application findOne(Long id) {
+    public Application findOne(String id) {
         log.debug("Request to get Application : {}", id);
         return applicationRepository.findOne(id);
     }
@@ -115,7 +115,7 @@ public class ApplicationServiceImpl implements ApplicationService {
      * @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         log.debug("Request to delete Application : {}", id);
         applicationRepository.delete(id);
     }
@@ -128,7 +128,7 @@ public class ApplicationServiceImpl implements ApplicationService {
      * @return
      */
     @Override
-    public Page<Application> findConvertedByContest(Pageable pageable, Long contestId) {
+    public Page<Application> findConvertedByContest(Pageable pageable, String contestId) {
         log.debug("Request to get Converted Applications by Contest");
         return applicationRepository.findByStatusAndContest_Id(pageable, ApplicationState.CONVERTED, contestId);
     }
@@ -141,13 +141,13 @@ public class ApplicationServiceImpl implements ApplicationService {
      * @return
      */
     @Override
-    public Page<Application> findByContest(Pageable pageable, Long contestId) {
+    public Page<Application> findByContest(Pageable pageable, String contestId) {
         log.debug("Request to get Converted Applications by Contest");
         return applicationRepository.findByContest_Id(pageable, contestId);
     }
 
     @Override
-    public VoiceFileData fileConvertedVoice(Long id) throws IOException {
+    public VoiceFileData fileConvertedVoice(String id) throws IOException {
         final Application one = applicationRepository.findOne(id);
         final Path path = Paths.get(applicationProperties.getFolder().getVoicesArchive().toString(), one.getConvertedRecordLocation());
         final ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(path));
@@ -155,7 +155,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public VoiceFileData fileOriginalVoice(Long id) throws IOException {
+    public VoiceFileData fileOriginalVoice(String id) throws IOException {
         final Application one = applicationRepository.findOne(id);
         String actualLocation = "";
         if (one.getStatus().equals(ApplicationState.IN_PROCESS)) {
