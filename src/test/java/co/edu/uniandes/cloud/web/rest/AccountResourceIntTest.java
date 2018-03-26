@@ -1,20 +1,19 @@
 package co.edu.uniandes.cloud.web.rest;
 
-import co.edu.uniandes.cloud.config.Constants;
 import co.edu.uniandes.cloud.CloiceApp;
+import co.edu.uniandes.cloud.config.Constants;
 import co.edu.uniandes.cloud.domain.Authority;
 import co.edu.uniandes.cloud.domain.User;
-import co.edu.uniandes.cloud.repository.AuthorityRepository;
-import co.edu.uniandes.cloud.repository.UserRepository;
+import co.edu.uniandes.cloud.repository.jpa.AuthorityRepository;
+import co.edu.uniandes.cloud.repository.jpa.UserRepository;
 import co.edu.uniandes.cloud.security.AuthoritiesConstants;
 import co.edu.uniandes.cloud.service.MailService;
+import co.edu.uniandes.cloud.service.UserService;
 import co.edu.uniandes.cloud.service.dto.UserDTO;
 import co.edu.uniandes.cloud.web.rest.errors.ExceptionTranslator;
 import co.edu.uniandes.cloud.web.rest.vm.KeyAndPasswordVM;
 import co.edu.uniandes.cloud.web.rest.vm.ManagedUserVM;
-import co.edu.uniandes.cloud.service.UserService;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,17 +29,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.Instant;
-import java.time.LocalDate;
 
-import java.util.*;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**

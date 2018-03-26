@@ -2,8 +2,7 @@ package co.edu.uniandes.cloud.security;
 
 import co.edu.uniandes.cloud.CloiceApp;
 import co.edu.uniandes.cloud.domain.User;
-import co.edu.uniandes.cloud.repository.UserRepository;
-
+import co.edu.uniandes.cloud.repository.jpa.UserRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;

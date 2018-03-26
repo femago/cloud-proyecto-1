@@ -3,7 +3,7 @@ package co.edu.uniandes.cloud.service;
 import co.edu.uniandes.cloud.config.ApplicationProperties;
 import co.edu.uniandes.cloud.domain.Application;
 import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
-import co.edu.uniandes.cloud.repository.ApplicationRepository;
+import co.edu.uniandes.cloud.repository.jpa.ApplicationJpaRepository;
 import co.edu.uniandes.cloud.service.impl.ApplicationServiceImpl;
 import com.google.common.io.Files;
 import net.bramp.ffmpeg.FFmpeg;
@@ -33,13 +33,13 @@ public class VoiceEncoderService {
 
     private final Logger log = LoggerFactory.getLogger(VoiceEncoderService.class);
 
-    private final ApplicationRepository applicationRepository;
+    private final ApplicationJpaRepository applicationRepository;
     private final ApplicationProperties applicationProperties;
 
     private final FFmpeg ffmpeg;
     private final FFprobe ffprobe;
 
-    public VoiceEncoderService(ApplicationRepository applicationRepository, ApplicationProperties applicationProperties) throws IOException {
+    public VoiceEncoderService(ApplicationJpaRepository applicationRepository, ApplicationProperties applicationProperties) throws IOException {
         this.applicationRepository = applicationRepository;
         this.applicationProperties = applicationProperties;
         this.ffmpeg = new FFmpeg();

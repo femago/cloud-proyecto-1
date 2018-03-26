@@ -3,7 +3,7 @@ package co.edu.uniandes.cloud.web.rest;
 import co.edu.uniandes.cloud.CloiceApp;
 import co.edu.uniandes.cloud.domain.Authority;
 import co.edu.uniandes.cloud.domain.User;
-import co.edu.uniandes.cloud.repository.UserRepository;
+import co.edu.uniandes.cloud.repository.jpa.UserRepository;
 import co.edu.uniandes.cloud.security.AuthoritiesConstants;
 import co.edu.uniandes.cloud.service.MailService;
 import co.edu.uniandes.cloud.service.UserService;
@@ -28,11 +28,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 

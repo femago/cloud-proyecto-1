@@ -4,6 +4,8 @@ import co.edu.uniandes.cloud.CloiceApp;
 import co.edu.uniandes.cloud.config.Constants;
 import co.edu.uniandes.cloud.config.audit.AuditEventConverter;
 import co.edu.uniandes.cloud.domain.PersistentAuditEvent;
+import co.edu.uniandes.cloud.repository.jpa.CustomAuditEventRepository;
+import co.edu.uniandes.cloud.repository.jpa.PersistenceAuditEventRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,8 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static co.edu.uniandes.cloud.repository.jpa.CustomAuditEventRepository.EVENT_DATA_COLUMN_MAX_LENGTH;
 import static org.assertj.core.api.Assertions.assertThat;
-import static co.edu.uniandes.cloud.repository.CustomAuditEventRepository.EVENT_DATA_COLUMN_MAX_LENGTH;
 
 /**
  * Test class for the CustomAuditEventRepository class.

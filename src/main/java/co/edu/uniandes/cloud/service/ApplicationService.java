@@ -34,20 +34,20 @@ public interface ApplicationService {
      * @param id the id of the entity
      * @return the entity
      */
-    Application findOne(Long id);
+    Application findOne(String id);
 
     /**
      * Delete the "id" application.
      *
      * @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(String id);
 
-    Page<Application> findConvertedByContest(Pageable pageable, Long contestId);
+    Page<Application> findConvertedByContest(Pageable pageable, String contestId);
 
-    Page<Application> findByContest(Pageable pageable, Long contestId);
+    Page<Application> findByContest(Pageable pageable, String contestId);
 
-    VoiceFileData fileConvertedVoice(Long id) throws IOException;
+    VoiceFileData fileConvertedVoice(String id) throws IOException;
 
-    VoiceFileData fileOriginalVoice(Long id) throws IOException;
+    VoiceFileData fileOriginalVoice(String id) throws IOException;
 }

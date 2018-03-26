@@ -95,6 +95,7 @@ if (OperatingSystem.current().isWindows()) {
 }
 
 test {
+    systemProperties['sqlite4java.library.path'] = "$buildDir/api/"
     exclude '**/CucumberTest*'
 
     // uncomment if the tests reports are not generated
@@ -137,9 +138,15 @@ configurations {
 repositories {
     mavenLocal()
     jcenter()
+    maven {
+        url "https://s3-us-west-2.amazonaws.com/dynamodb-local/release"
+    }
 }
 
 dependencies {
+    compileOnly 'org.projectlombok:lombok:1.16.20'
+    apt "org.projectlombok:lombok:1.16.20"
+
     compile "io.github.jhipster:jhipster"
     compile "io.dropwizard.metrics:metrics-core"
     compile "io.dropwizard.metrics:metrics-json"
@@ -194,6 +201,12 @@ dependencies {
 
     compile "net.bramp.ffmpeg:ffmpeg:0.6.2"
 
+    //Dynamo
+    //compile 'com.amazonaws:aws-java-sdk-core:1.11.301'
+    compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.64'
+    compile 'com.amazonaws:DynamoDBLocal:1.11.86'
+    compile 'com.github.derjust:spring-data-dynamodb:4.5.1'
+
     testCompile "com.jayway.jsonpath:json-path"
     testCompile ("org.springframework.boot:spring-boot-starter-test") {
         exclude group: 'com.vaadin.external.google', module: 'android-json'
@@ -234,3 +247,20 @@ if (project.hasProperty('nodeInstall')) {
 compileJava.dependsOn processResources
 processResources.dependsOn cleanResources,bootBuildInfo
 bootBuildInfo.mustRunAfter cleanResources
+
+
+configurations {
+    sqlite
+}
+dependencies {
+    sqlite 'com.almworks.sqlite4java:sqlite4java-win32-x64:1.0.392'
+
+}
+task extractApi(type: Sync) {
+    dependsOn configurations.sqlite
+
+    from {
+        configurations.sqlite
+    }
+    into "$buildDir/api/"
+}
