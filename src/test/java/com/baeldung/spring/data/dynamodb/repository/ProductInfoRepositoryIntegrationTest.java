@@ -13,6 +13,8 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,6 +22,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.time.Instant;
 import java.util.List;
 
 import static org.hamcrest.Matchers.greaterThan;
@@ -33,6 +36,7 @@ import static org.junit.Assert.assertThat;
 @ActiveProfiles("local")
 @TestPropertySource(properties = { "amazon.dynamodb.endpoint=http://localhost:8000/", "amazon.aws.accesskey=test1", "amazon.aws.secretkey=test231" })
 public class ProductInfoRepositoryIntegrationTest {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @ClassRule
     public static LocalDbCreationRule dynamoDB = new LocalDbCreationRule();
@@ -71,11 +75,13 @@ public class ProductInfoRepositoryIntegrationTest {
     public void givenItemWithExpectedCost_whenRunFindAll_thenItemIsFound() {
 
         ProductInfo productInfo = new ProductInfo(EXPECTED_COST, EXPECTED_PRICE);
+        productInfo.setCreateDate(Instant.now());
+        System.out.println("Guardar "+productInfo);
         repository.save(productInfo);
 
         List<ProductInfo> result = (List<ProductInfo>) repository.findAll();
         assertThat(result.size(), is(greaterThan(0)));
         assertThat(result.get(0).getCost(), is(equalTo(EXPECTED_COST)));
-
+        result.stream().forEach(System.out::println);
     }
 }
