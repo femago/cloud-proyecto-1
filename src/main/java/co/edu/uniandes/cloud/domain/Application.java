@@ -2,6 +2,7 @@ package co.edu.uniandes.cloud.domain;
 
 
 import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
+import co.edu.uniandes.cloud.repository.dynamo.DynamoConverters;
 import co.edu.uniandes.cloud.repository.dynamo.DynamoInstantConverter;
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.ToString;
@@ -72,6 +73,7 @@ public class Application implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
+    @DynamoDBTypeConverted( converter = DynamoConverters.InstantConverter.class )
     private ApplicationState status;/
 
     @ManyToOne
