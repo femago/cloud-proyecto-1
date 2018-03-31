@@ -34,7 +34,7 @@ public class BatchVoicesService {
     public void processPendingVoices() {
         count = 0;
         log.info("Start encoding pending applications");
-        final List<Application> statusInProcess = applicationRepository.findByStatusEquals(ApplicationState.IN_PROCESS);
+        final List<Application> statusInProcess = applicationRepository.findByStatus(ApplicationState.IN_PROCESS);
         statusInProcess.stream()
             .filter(application -> application.getOriginalRecordLocation() != null)
             .forEach(this::wrapProcessing);
