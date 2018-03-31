@@ -146,6 +146,7 @@ repositories {
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.16.20'
     apt "org.projectlombok:lombok:1.16.20"
+    runtime "org.projectlombok:lombok:1.16.20"
 
     compile "io.github.jhipster:jhipster"
     compile "io.dropwizard.metrics:metrics-core"
@@ -207,6 +208,8 @@ dependencies {
     compile 'com.amazonaws:DynamoDBLocal:1.11.86'
     compile 'com.github.derjust:spring-data-dynamodb:4.5.1'
 
+    testCompileOnly "org.projectlombok:lombok:1.16.20"
+    testApt "org.projectlombok:lombok:1.16.20"
     testCompile "com.jayway.jsonpath:json-path"
     testCompile ("org.springframework.boot:spring-boot-starter-test") {
         exclude group: 'com.vaadin.external.google', module: 'android-json'
@@ -218,6 +221,7 @@ dependencies {
     testCompile "org.mockito:mockito-core"
     testCompile "com.mattbertolini:liquibase-slf4j"
     testCompile "org.hamcrest:hamcrest-library"
+    testCompile 'uk.co.jemos.podam:podam:7.1.1.RELEASE'
     optional ("org.springframework.boot:spring-boot-configuration-processor") {
         exclude group: 'com.vaadin.external.google', module: 'android-json'
     }
@@ -256,7 +260,7 @@ dependencies {
     sqlite 'com.almworks.sqlite4java:sqlite4java-win32-x64:1.0.392'
 
 }
-task extractApi(type: Sync) {
+task extractSQLiteLibs(type: Sync) {
     dependsOn configurations.sqlite
 
     from {
@@ -264,3 +268,5 @@ task extractApi(type: Sync) {
     }
     into "$buildDir/api/"
 }
+
+test.dependsOn extractSQLiteLibs

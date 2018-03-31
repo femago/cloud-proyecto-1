@@ -2,6 +2,7 @@ package co.edu.uniandes.cloud.service.impl;
 
 import co.edu.uniandes.cloud.config.ApplicationProperties;
 import co.edu.uniandes.cloud.domain.Application;
+import co.edu.uniandes.cloud.domain.Contest;
 import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
 import co.edu.uniandes.cloud.repository.jpa.ApplicationJpaRepository;
 import co.edu.uniandes.cloud.service.ApplicationService;
@@ -130,7 +131,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Page<Application> findConvertedByContest(Pageable pageable, String contestId) {
         log.debug("Request to get Converted Applications by Contest");
-        return applicationRepository.findByStatusAndContest_Id(pageable, ApplicationState.CONVERTED, contestId);
+        return applicationRepository.findByStatusAndContest(pageable, ApplicationState.CONVERTED, new Contest(contestId));
     }
 
     /**
@@ -142,8 +143,8 @@ public class ApplicationServiceImpl implements ApplicationService {
      */
     @Override
     public Page<Application> findByContest(Pageable pageable, String contestId) {
-        log.debug("Request to get Converted Applications by Contest");
-        return applicationRepository.findByContest_Id(pageable, contestId);
+        log.debug("Request to get Applications by Contest");
+        return applicationRepository.findByContest(pageable, new Contest(contestId));
     }
 
     @Override

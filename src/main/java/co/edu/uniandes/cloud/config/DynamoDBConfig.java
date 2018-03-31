@@ -11,10 +11,14 @@ import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRep
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 @EnableDynamoDBRepositories(basePackages = "co.edu.uniandes.cloud.repository.dynamo")
+@Profile(DynamoDBConfig.SPRING_PROFILE_DYNAMODB)
 public class DynamoDBConfig {
+
+    public static final String SPRING_PROFILE_DYNAMODB = "dynamo";
 
     @Value("${amazon.dynamodb.endpoint}")
     private String amazonDynamoDBEndpoint;
