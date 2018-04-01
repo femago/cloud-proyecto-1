@@ -75,7 +75,7 @@ public class ContestDynamoRepositoryTest {
 
         adjustToHowWasSaved(cnts);
 
-        assertThat(cnts, is(stored));
+        assertThat(cnts.toString(), is(stored.toString()));
 
     }
 
