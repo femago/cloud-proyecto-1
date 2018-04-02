@@ -194,6 +194,8 @@ dependencies {
 
     compile "net.bramp.ffmpeg:ffmpeg:0.6.2"
 
+    compile 'com.amazonaws:aws-java-sdk-s3:1.11.64'
+
     testCompile "com.jayway.jsonpath:json-path"
     testCompile ("org.springframework.boot:spring-boot-starter-test") {
         exclude group: 'com.vaadin.external.google', module: 'android-json'

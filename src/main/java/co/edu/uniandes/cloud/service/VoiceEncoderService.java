@@ -5,6 +5,7 @@ import co.edu.uniandes.cloud.domain.Application;
 import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
 import co.edu.uniandes.cloud.repository.ApplicationRepository;
 import co.edu.uniandes.cloud.service.impl.ApplicationServiceImpl;
+import co.edu.uniandes.cloud.service.media.VoicesMediaRepository;
 import com.google.common.io.Files;
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
@@ -35,27 +36,29 @@ public class VoiceEncoderService {
 
     private final ApplicationRepository applicationRepository;
     private final ApplicationProperties applicationProperties;
+    private final VoicesMediaRepository mediaRepository;
 
     private final FFmpeg ffmpeg;
     private final FFprobe ffprobe;
 
-    public VoiceEncoderService(ApplicationRepository applicationRepository, ApplicationProperties applicationProperties) throws IOException {
+    public VoiceEncoderService(ApplicationRepository applicationRepository, ApplicationProperties applicationProperties, VoicesMediaRepository mediaRepository) throws IOException {
         this.applicationRepository = applicationRepository;
         this.applicationProperties = applicationProperties;
+        this.mediaRepository = mediaRepository;
         this.ffmpeg = new FFmpeg();
         this.ffprobe = new FFprobe();
     }
 
     public void processAppOriginalRecord(Application app) {
-        final Path path = Paths.get(applicationProperties.getFolder().getVoicesTbp().toString(), app.getOriginalRecordLocation());
-
+        final Path path = mediaRepository.retrieveOriginalRecordTbp(app);
         try {
             final File originalRecord = path.toFile().getCanonicalFile();
             if (originalRecord.exists()) {
                 log.info("Voice to process {}", originalRecord.getPath());
                 final File convertedRecord = encodeVoice(originalRecord);
                 markApplicationConverted(app, convertedRecord.getName());
-                archiveOriginalFile(originalRecord);
+                mediaRepository.archiveOriginalRecord(app);
+                mediaRepository.archiveConvertedRecord(app, convertedRecord);
                 log.info("Voice converted for application {}", app.getId());
             } else {
                 resetInconsistentApplication(app);
@@ -66,10 +69,6 @@ public class VoiceEncoderService {
             throw new UncheckedIOException(e);
         }
 
-    }
-
-    private void archiveOriginalFile(File app) throws IOException {
-        Files.move(app, Paths.get(applicationProperties.getFolder().getVoicesArchive().toString(), app.getName().toString()).toFile());
     }
 
     private void resetInconsistentApplication(Application app) {

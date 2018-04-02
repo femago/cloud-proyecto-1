@@ -18,6 +18,8 @@ import java.nio.file.Paths;
 public class ApplicationProperties {
 
     public static final String CLOICE_PROFILE_WORKER = "worker";
+    public static final String CLOICE_PROFILE_S3 = "s3";
+    public static final String CLOICE_PROFILE_NO_S3 = "!s3";
 
     private final Folder folder = new Folder();
 
