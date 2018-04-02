@@ -4,6 +4,7 @@ import co.edu.uniandes.cloud.config.ApplicationProperties;
 import co.edu.uniandes.cloud.domain.Application;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import org.slf4j.Logger;
@@ -11,12 +12,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_S3;
 
@@ -40,6 +43,12 @@ public class AwsS3MediaRepository implements VoicesMediaRepository {
         log.info("AWS S3 Media Repository Loaded");
     }
 
+    public String storeOriginalRecordTbp(byte[] originalRecord, String nameSuffix) {
+        final String recordName = UUID.randomUUID().toString() + nameSuffix;
+        s3.putObject(S3_BUCKET_NAME, TBP_PREFIX + recordName, new ByteArrayInputStream(originalRecord), new ObjectMetadata());
+        return recordName;
+    }
+
     @Override
     public Path retrieveOriginalRecordTbp(Application tbpApp) {
         final Path path = Paths.get(applicationProperties.getFolder().getVoicesTbp().toString(),
@@ -50,6 +59,7 @@ public class AwsS3MediaRepository implements VoicesMediaRepository {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+        log.info("Object Pulled from S3 {}", o.getKey());
         return path;
     }
 
