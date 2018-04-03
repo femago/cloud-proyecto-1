@@ -28,6 +28,7 @@ import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_
 public class AwsS3MediaRepository implements VoicesMediaRepository {
 
     public static final String S3_BUCKET_NAME = "uniandes-cloud-cloice";
+    public static final String S3_FILE_PREFIX = "S3_";
     private final Logger log = LoggerFactory.getLogger(FileSystemMediaRepository.class);
     private final ApplicationProperties applicationProperties;
     private final AmazonS3 s3;
@@ -44,8 +45,10 @@ public class AwsS3MediaRepository implements VoicesMediaRepository {
     }
 
     public String storeOriginalRecordTbp(byte[] originalRecord, String nameSuffix) {
-        final String recordName = UUID.randomUUID().toString() + nameSuffix;
-        s3.putObject(S3_BUCKET_NAME, TBP_PREFIX + recordName, new ByteArrayInputStream(originalRecord), new ObjectMetadata());
+        final String recordName = S3_FILE_PREFIX + UUID.randomUUID().toString() + nameSuffix;
+        final ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(originalRecord.length);
+        s3.putObject(S3_BUCKET_NAME, TBP_PREFIX + recordName, new ByteArrayInputStream(originalRecord), metadata);
         return recordName;
     }
 
