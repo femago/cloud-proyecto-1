@@ -12,5 +12,5 @@ public interface VoicesMediaRepository {
 
     void archiveOriginalRecord(Application processedApp) throws IOException;
 
-    void archiveConvertedRecord(Application processedApp, File converted);
+    void archiveConvertedRecord(File converted);
 }

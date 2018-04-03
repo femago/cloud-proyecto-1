@@ -42,9 +42,9 @@ public class FileSystemMediaRepository implements VoicesMediaRepository {
     }
 
     @Override
-    public void archiveConvertedRecord(Application processedApp, File converted) {
+    public void archiveConvertedRecord(File converted) {
         //Empty for file system, files already saved in expected folder
-        log.info("Converted record Archived {}", processedApp.getId());
+        log.info("Converted record Archived {}", converted.getName());
 
     }
 

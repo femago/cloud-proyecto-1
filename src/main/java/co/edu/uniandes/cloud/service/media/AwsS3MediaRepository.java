@@ -33,6 +33,7 @@ public class AwsS3MediaRepository implements VoicesMediaRepository {
     private final ApplicationProperties applicationProperties;
     private final AmazonS3 s3;
     public static final String TBP_PREFIX = "voices/tbp/";
+    public static final String ARCHIVE_PREFIX = "voices/archive/";
 
     public AwsS3MediaRepository(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
@@ -67,12 +68,14 @@ public class AwsS3MediaRepository implements VoicesMediaRepository {
     }
 
     @Override
-    public void archiveOriginalRecord(Application processedApp) throws IOException {
-
+    public void archiveOriginalRecord(Application processedApp) {
+        s3.copyObject(S3_BUCKET_NAME, TBP_PREFIX + processedApp.getOriginalRecordLocation(),
+            S3_BUCKET_NAME, ARCHIVE_PREFIX + processedApp.getOriginalRecordLocation());
+        s3.deleteObject(S3_BUCKET_NAME, TBP_PREFIX + processedApp.getOriginalRecordLocation());
     }
 
     @Override
-    public void archiveConvertedRecord(Application processedApp, File converted) {
-
+    public void archiveConvertedRecord(File converted) {
+        s3.putObject(S3_BUCKET_NAME, ARCHIVE_PREFIX + converted.getName(), converted);
     }
 }

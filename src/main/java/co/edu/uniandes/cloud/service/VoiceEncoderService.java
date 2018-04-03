@@ -58,7 +58,7 @@ public class VoiceEncoderService {
                 final File convertedRecord = encodeVoice(originalRecord);
                 markApplicationConverted(app, convertedRecord.getName());
                 mediaRepository.archiveOriginalRecord(app);
-                mediaRepository.archiveConvertedRecord(app, convertedRecord);
+                mediaRepository.archiveConvertedRecord(convertedRecord);
                 log.info("Voice converted for application {}", app.getId());
             } else {
                 resetInconsistentApplication(app);
