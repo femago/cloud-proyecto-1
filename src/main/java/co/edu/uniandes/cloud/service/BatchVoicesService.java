@@ -42,7 +42,7 @@ public class BatchVoicesService {
 
     private void wrapProcessing(Application app) {
         try {
-            log.info("Processed {}", count);
+            log.info("Processing {}", count);
             voiceEncoderService.processAppOriginalRecord(app);
             log.debug("Sending published voice email to '{}'", app.getEmail());
             mailService.sendStaticEmailFromTemplate(app.getEmail(),

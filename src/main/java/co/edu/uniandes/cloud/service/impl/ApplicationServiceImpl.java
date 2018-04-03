@@ -6,6 +6,7 @@ import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
 import co.edu.uniandes.cloud.repository.ApplicationRepository;
 import co.edu.uniandes.cloud.service.ApplicationService;
 import co.edu.uniandes.cloud.service.dto.VoiceFileData;
+import co.edu.uniandes.cloud.service.media.VoicesMediaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
@@ -14,9 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,17 +29,20 @@ import java.time.Instant;
 @Transactional
 public class ApplicationServiceImpl implements ApplicationService {
 
-    public static final String VOICE_PREFIX = "voice_";
     public static final String ORIGINAL_VOICE_MARKER = "_orig_";
     private final Logger log = LoggerFactory.getLogger(ApplicationServiceImpl.class);
 
     private final ApplicationRepository applicationRepository;
     private final ApplicationProperties applicationProperties;
+    private final VoicesMediaRepository mediaRepository;
+
 
     public ApplicationServiceImpl(ApplicationRepository applicationRepository,
-                                  ApplicationProperties applicationProperties) {
+                                  ApplicationProperties applicationProperties,
+                                  VoicesMediaRepository mediaRepository) {
         this.applicationRepository = applicationRepository;
         this.applicationProperties = applicationProperties;
+        this.mediaRepository = mediaRepository;
     }
 
     /**
@@ -66,17 +68,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private void storeVoiceTBP(Application application, byte[] originalRecordCopy) {
-        try {
-            final String suffix = ORIGINAL_VOICE_MARKER + application.getId() + "." + extractExtFromContentType(application.getOriginalRecordContentType());
-            final File originalVoiceFile = File.createTempFile(VOICE_PREFIX, suffix, applicationProperties.getFolder().getVoicesTbp().toFile());
 
-            Files.write(originalVoiceFile.toPath(), originalRecordCopy);
-
-            application.setOriginalRecordLocation(originalVoiceFile.getName());
-            applicationRepository.save(application);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        final String suffix = ORIGINAL_VOICE_MARKER + application.getId() + "." + extractExtFromContentType(application.getOriginalRecordContentType());
+        final String recordId = mediaRepository.storeOriginalRecordTbp(originalRecordCopy, suffix);
+        application.setOriginalRecordLocation(recordId);
+        applicationRepository.save(application);
     }
 
     private String extractExtFromContentType(String contentType) {

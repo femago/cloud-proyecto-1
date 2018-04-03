@@ -56,6 +56,4 @@ public class AwsS3MediaRepositoryTest {
         final String s = s3.storeOriginalRecordTbp(buffer, "_orig_756.mp3");
         s3.archiveOriginalRecord(new Application().originalRecordLocation(s));
     }
-
-
 }

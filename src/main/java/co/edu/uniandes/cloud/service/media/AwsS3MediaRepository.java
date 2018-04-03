@@ -29,11 +29,12 @@ public class AwsS3MediaRepository implements VoicesMediaRepository {
 
     public static final String S3_BUCKET_NAME = "uniandes-cloud-cloice";
     public static final String S3_FILE_PREFIX = "S3_";
-    private final Logger log = LoggerFactory.getLogger(FileSystemMediaRepository.class);
-    private final ApplicationProperties applicationProperties;
-    private final AmazonS3 s3;
     public static final String TBP_PREFIX = "voices/tbp/";
     public static final String ARCHIVE_PREFIX = "voices/archive/";
+
+    private final Logger log = LoggerFactory.getLogger(AwsS3MediaRepository.class);
+    private final ApplicationProperties applicationProperties;
+    private final AmazonS3 s3;
 
     public AwsS3MediaRepository(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
@@ -51,6 +52,7 @@ public class AwsS3MediaRepository implements VoicesMediaRepository {
         final ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(originalRecord.length);
         s3.putObject(S3_BUCKET_NAME, TBP_PREFIX + recordName, new ByteArrayInputStream(originalRecord), metadata);
+        log.info("Object Pushed to S3 {}", TBP_PREFIX + recordName);
         return recordName;
     }
 
@@ -70,13 +72,17 @@ public class AwsS3MediaRepository implements VoicesMediaRepository {
 
     @Override
     public void archiveOriginalRecord(Application processedApp) {
-        s3.copyObject(S3_BUCKET_NAME, TBP_PREFIX + processedApp.getOriginalRecordLocation(),
-            S3_BUCKET_NAME, ARCHIVE_PREFIX + processedApp.getOriginalRecordLocation());
-        s3.deleteObject(S3_BUCKET_NAME, TBP_PREFIX + processedApp.getOriginalRecordLocation());
+        final String key = TBP_PREFIX + processedApp.getOriginalRecordLocation();
+        s3.copyObject(S3_BUCKET_NAME, key, S3_BUCKET_NAME,
+            ARCHIVE_PREFIX + processedApp.getOriginalRecordLocation());
+        s3.deleteObject(S3_BUCKET_NAME, key);
+        log.info("Moved S3 object to archive {}", key);
     }
 
     @Override
     public void archiveConvertedRecord(File converted) {
-        s3.putObject(S3_BUCKET_NAME, ARCHIVE_PREFIX + converted.getName(), converted);
+        final String key = ARCHIVE_PREFIX + converted.getName();
+        s3.putObject(S3_BUCKET_NAME, key, converted);
+        log.info("Object Pushed to S3 {}", key);
     }
 }
