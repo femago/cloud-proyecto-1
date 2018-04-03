@@ -8,6 +8,8 @@ import java.nio.file.Path;
 
 public interface VoicesMediaRepository {
 
+    String storeOriginalRecordTbp(byte[] originalRecord, String nameSuffix);
+
     Path retrieveOriginalRecordTbp(Application tbpApp);
 
     void archiveOriginalRecord(Application processedApp) throws IOException;

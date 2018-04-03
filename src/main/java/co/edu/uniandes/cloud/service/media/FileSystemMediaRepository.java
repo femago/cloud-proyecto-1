@@ -28,6 +28,11 @@ public class FileSystemMediaRepository implements VoicesMediaRepository {
     }
 
     @Override
+    public String storeOriginalRecordTbp(byte[] originalRecord, String nameSuffix) {
+        return;
+    }
+
+    @Override
     public Path retrieveOriginalRecordTbp(Application tbpApp) {
         return Paths.get(applicationProperties.getFolder().getVoicesTbp().toString(), tbpApp.getOriginalRecordLocation());
     }

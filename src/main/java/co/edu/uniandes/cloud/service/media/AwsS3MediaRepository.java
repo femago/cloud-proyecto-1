@@ -45,6 +45,7 @@ public class AwsS3MediaRepository implements VoicesMediaRepository {
         log.info("AWS S3 Media Repository Loaded");
     }
 
+    @Override
     public String storeOriginalRecordTbp(byte[] originalRecord, String nameSuffix) {
         final String recordName = S3_FILE_PREFIX + UUID.randomUUID().toString() + nameSuffix;
         final ObjectMetadata metadata = new ObjectMetadata();
