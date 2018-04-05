@@ -69,7 +69,6 @@ export const applicationPopupRoute: Routes = [
             authorities: [],
             pageTitle: 'cloiceApp.application.home.title'
         },
-        canActivate: [UserRouteAccessService],
         outlet: 'popup'
     },
     {
