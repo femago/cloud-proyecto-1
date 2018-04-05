@@ -1,7 +1,5 @@
 package co.edu.uniandes.cloud.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.io.IOException;
@@ -17,19 +15,23 @@ import java.nio.file.Paths;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
-    public static final String CLOICE_PROFILE_WORKER = "worker";
     public static final String CLOICE_PROFILE_S3 = "s3";
     public static final String CLOICE_PROFILE_NO_S3 = "!s3";
+    public static final String CLOICE_PROFILE_SQS_WORKER = "wk-sqs";
+    public static final String CLOICE_PROFILE_SCH_WORKER = "wk-sch";
 
     private final Folder folder = new Folder();
+    private final AWS aws = new AWS();
 
     public Folder getFolder() {
         return folder;
     }
 
-    public static class Folder {
-        private final Logger log = LoggerFactory.getLogger(Folder.class);
+    public AWS getAws() {
+        return aws;
+    }
 
+    public static class Folder {
         private Path voicesTbp;
         private Path voicesArchive;
 
@@ -47,6 +49,18 @@ public class ApplicationProperties {
 
         public void setVoicesArchive(String voicesArchive) throws IOException {
             this.voicesArchive = Paths.get(voicesArchive);
+        }
+    }
+
+    public static class AWS {
+        private long sqsReconnectionRateSeconds;
+
+        public long getSqsReconnectionRateSeconds() {
+            return sqsReconnectionRateSeconds;
+        }
+
+        public void setSqsReconnectionRateSeconds(String sqsReconnectionRateSeconds) {
+            this.sqsReconnectionRateSeconds = Long.valueOf(sqsReconnectionRateSeconds);
         }
     }
 }

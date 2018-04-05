@@ -23,11 +23,12 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_WORKER;
+import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_SCH_WORKER;
+import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_SQS_WORKER;
 
 @Service
 @Transactional
-@Profile(CLOICE_PROFILE_WORKER)
+@Profile({CLOICE_PROFILE_SQS_WORKER, CLOICE_PROFILE_SCH_WORKER})
 public class VoiceEncoderService {
 
     public static final String CONVERTED_VOICE_MARKER = "_cnvrt_";

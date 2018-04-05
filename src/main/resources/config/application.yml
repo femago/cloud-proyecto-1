@@ -109,3 +109,5 @@ application:
     folder:
         voices-tbp: ./shared/cloice/voices/tbp
         voices-archive: ./shared/cloice/voices/archive
+    aws:
+        sqs-reconnection-rate-seconds:  1
