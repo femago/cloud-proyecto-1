@@ -1,14 +1,14 @@
 package co.edu.uniandes.cloud.domain;
 
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
-
-import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
 
 /**
  * A Application.
@@ -61,6 +61,14 @@ public class Application implements Serializable {
 
     @ManyToOne
     private Contest contest;
+
+    @JsonProperty
+    @Transient
+    private String originalRecordURL;
+
+    @JsonProperty
+    @Transient
+    private String convertedRecordURL;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -214,6 +222,23 @@ public class Application implements Serializable {
         this.contest = contest;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+
+    public String getOriginalRecordURL() {
+        return originalRecordURL;
+    }
+
+    public void setOriginalRecordURL(String originalRecordURL) {
+        this.originalRecordURL = originalRecordURL;
+    }
+
+    public String getConvertedRecordURL() {
+        return convertedRecordURL;
+    }
+
+    public void setConvertedRecordURL(String convertedRecordURL) {
+        this.convertedRecordURL = convertedRecordURL;
+    }
 
     @Override
     public boolean equals(Object o) {

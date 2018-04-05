@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {SERVER_API_URL} from '../../app.constants';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import {JhiDateUtils} from 'ng-jhipster';
 
-import { Application } from './application.model';
-import { BaseEntity, createRequestOption } from '../../shared';
+import {Application} from './application.model';
+import {BaseEntity, createRequestOption} from '../../shared';
 
 export type EntityResponseType = HttpResponse<Application>;
 
@@ -91,11 +91,19 @@ export class ApplicationService {
         return copy;
     }
 
-    originalVoiceResolver(id: number) {
-        return `${this.resourceUrl}/${id}/voice/original`;
+    originalVoiceResolver(application: Application) {
+        const originalRecordURL = application.originalRecordURL;
+        if (!originalRecordURL.startsWith('https')) {
+            return `${this.resourceUrl}/${originalRecordURL}`;
+        }
+        return originalRecordURL;
     }
 
-    convertedVoiceResolver(id: number) {
-        return `${this.resourceUrl}/${id}/voice/converted`;
+    convertedVoiceResolver(application: Application) {
+        const convertedRecordURL = application.convertedRecordURL;
+        if (!convertedRecordURL.startsWith('https')) {
+            return `${this.resourceUrl}/${convertedRecordURL}`;
+        }
+        return convertedRecordURL;
     }
 }

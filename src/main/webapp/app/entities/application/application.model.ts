@@ -1,4 +1,4 @@
-import { BaseEntity } from './../../shared';
+import {BaseEntity} from './../../shared';
 
 export const enum ApplicationState {
     'IN_PROCESS',
@@ -19,6 +19,8 @@ export class Application implements BaseEntity {
         public convertedRecordLocation?: string,
         public status?: ApplicationState,
         public contest?: BaseEntity,
+        public originalRecordURL?: string,
+        public convertedRecordURL?: string,
     ) {
     }
 }

@@ -35,7 +35,7 @@
                 <td>
                     <button *ngIf="application.originalRecord"
                             type="submit"
-                            (click)="downloadVoice(application.id)"
+                            (click)="downloadVoice(application)"
                             class="btn btn-success">
                         <span class="fa fa-cloud-download"></span>
                         <span class="d-none d-md-inline" jhiTranslate="entity.action.download">download</span>
@@ -63,7 +63,7 @@
                         </vg-controls>
 
                         <audio #media [vgMedia]="media" id="myAudio" preload="auto">
-                            <source [src]="resolveConvertedVoice(application.id)" [type]="'audio/mp3'">
+                            <source [src]="resolveConvertedVoice(application)" [type]="'audio/mp3'">
                         </audio>
                     </vg-player>
                     </div>

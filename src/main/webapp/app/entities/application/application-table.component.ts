@@ -122,12 +122,12 @@ export class ApplicationTableComponent implements OnInit, OnDestroy {
         return this.dataUtils.openFile(contentType, field);
     }
 
-    downloadVoice(id) {
-        const tab = window.open(this.applicationService.originalVoiceResolver(id));
+    downloadVoice(application: Application) {
+        const tab = window.open(this.applicationService.originalVoiceResolver(application));
     }
 
-    resolveConvertedVoice(id) {
-        return this.applicationService.convertedVoiceResolver(id);
+    resolveConvertedVoice(application: Application) {
+        return this.applicationService.convertedVoiceResolver(application);
     }
 
     registerChangeInApplications() {

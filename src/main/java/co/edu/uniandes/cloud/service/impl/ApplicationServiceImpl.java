@@ -22,6 +22,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 
+import static co.edu.uniandes.cloud.service.media.AwsS3MediaRepository.S3_FILE_PREFIX;
+
 
 /**
  * Service Implementation for managing Application.
@@ -67,6 +69,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         storeVoiceTBP(application, originalRecordCopy);
         eventEmitter.onSaved(save);
+        resolveMediaLocation(save);
         return save;
     }
 
@@ -92,7 +95,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Transactional(readOnly = true)
     public Page<Application> findAll(Pageable pageable) {
         log.debug("Request to get all Applications");
-        return applicationRepository.findAll(pageable);
+        return resolveMediaLocation(applicationRepository.findAll(pageable));
     }
 
     /**
@@ -105,7 +108,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Transactional(readOnly = true)
     public Application findOne(Long id) {
         log.debug("Request to get Application : {}", id);
-        return applicationRepository.findOne(id);
+        return resolveMediaLocation(applicationRepository.findOne(id));
     }
 
     /**
@@ -129,7 +132,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Page<Application> findConvertedByContest(Pageable pageable, Long contestId) {
         log.debug("Request to get Converted Applications by Contest");
-        return applicationRepository.findByStatusAndContest_Id(pageable, ApplicationState.CONVERTED, contestId);
+        return resolveMediaLocation(applicationRepository.findByStatusAndContest_Id(pageable, ApplicationState.CONVERTED, contestId));
     }
 
     /**
@@ -142,7 +145,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Page<Application> findByContest(Pageable pageable, Long contestId) {
         log.debug("Request to get Converted Applications by Contest");
-        return applicationRepository.findByContest_Id(pageable, contestId);
+        return resolveMediaLocation(applicationRepository.findByContest_Id(pageable, contestId));
     }
 
     @Override
@@ -166,6 +169,27 @@ public class ApplicationServiceImpl implements ApplicationService {
         final Path path = Paths.get(actualLocation, one.getOriginalRecordLocation());
         final ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(path));
         return new VoiceFileData(one.getOriginalRecordContentType(), byteArrayResource);
+    }
+
+    private Page<Application> resolveMediaLocation(Page<Application> applications) {
+        applications.forEach(this::resolveMediaLocation);
+        return applications;
+    }
+
+    private Application resolveMediaLocation(Application application) {
+        final boolean isS3 = application.getOriginalRecordLocation().startsWith(S3_FILE_PREFIX);
+        if (isS3) {
+            if (ApplicationState.IN_PROCESS.equals(application.getStatus())) {
+                application.setOriginalRecordURL("https://s3.amazonaws.com/uniandes-cloud-cloice/voices/tbp/" + application.getOriginalRecordLocation());
+            } else {
+                application.setOriginalRecordURL("https://s3.amazonaws.com/uniandes-cloud-cloice/voices/archive/" + application.getOriginalRecordLocation());
+            }
+            application.setConvertedRecordURL("https://s3.amazonaws.com/uniandes-cloud-cloice/voices/archive/" + application.getConvertedRecordLocation());
+        } else {
+            application.setOriginalRecordURL(application.getId() + "/voice/original");
+            application.setConvertedRecordURL(application.getId() + "/voice/converted");
+        }
+        return application;
     }
 
 }
