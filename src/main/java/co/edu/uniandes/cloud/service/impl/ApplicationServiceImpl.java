@@ -7,6 +7,7 @@ import co.edu.uniandes.cloud.repository.ApplicationRepository;
 import co.edu.uniandes.cloud.service.ApplicationService;
 import co.edu.uniandes.cloud.service.dto.VoiceFileData;
 import co.edu.uniandes.cloud.service.media.VoicesMediaRepository;
+import co.edu.uniandes.cloud.service.worker.ApplicationEventEmitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
@@ -35,14 +36,16 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final ApplicationProperties applicationProperties;
     private final VoicesMediaRepository mediaRepository;
-
+    private final ApplicationEventEmitter eventEmitter;
 
     public ApplicationServiceImpl(ApplicationRepository applicationRepository,
                                   ApplicationProperties applicationProperties,
-                                  VoicesMediaRepository mediaRepository) {
+                                  VoicesMediaRepository mediaRepository,
+                                  ApplicationEventEmitter eventEmitter) {
         this.applicationRepository = applicationRepository;
         this.applicationProperties = applicationProperties;
         this.mediaRepository = mediaRepository;
+        this.eventEmitter = eventEmitter;
     }
 
     /**
@@ -63,7 +66,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application save = applicationRepository.save(application);
 
         storeVoiceTBP(application, originalRecordCopy);
-
+        eventEmitter.onSaved(save);
         return save;
     }
 
