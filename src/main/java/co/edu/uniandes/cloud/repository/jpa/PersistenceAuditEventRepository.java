@@ -1,4 +1,4 @@
-package co.edu.uniandes.cloud.repository;
+package co.edu.uniandes.cloud.repository.jpa;
 
 import co.edu.uniandes.cloud.domain.PersistentAuditEvent;
 import org.springframework.data.domain.Page;

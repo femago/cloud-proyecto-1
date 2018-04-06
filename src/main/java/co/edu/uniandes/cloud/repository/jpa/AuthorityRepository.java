@@ -1,7 +1,6 @@
-package co.edu.uniandes.cloud.repository;
+package co.edu.uniandes.cloud.repository.jpa;
 
 import co.edu.uniandes.cloud.domain.Authority;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

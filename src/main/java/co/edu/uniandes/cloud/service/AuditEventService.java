@@ -1,7 +1,7 @@
 package co.edu.uniandes.cloud.service;
 
 import co.edu.uniandes.cloud.config.audit.AuditEventConverter;
-import co.edu.uniandes.cloud.repository.PersistenceAuditEventRepository;
+import co.edu.uniandes.cloud.repository.jpa.PersistenceAuditEventRepository;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

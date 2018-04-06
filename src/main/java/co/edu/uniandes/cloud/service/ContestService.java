@@ -31,14 +31,14 @@ public interface ContestService {
      * @param id the id of the entity
      * @return the entity
      */
-    Contest findOne(Long id);
+    Contest findOne(String id);
 
     /**
      * Delete the "id" contest.
      *
      * @param id the id of the entity
      */
-    void delete(Long id);
+    void delete(String id);
 
     Page<Contest> findByCurrentUser(Pageable pageable);
 

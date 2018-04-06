@@ -1,15 +1,14 @@
 package co.edu.uniandes.cloud.service;
 
+import co.edu.uniandes.cloud.config.Constants;
 import co.edu.uniandes.cloud.domain.Authority;
 import co.edu.uniandes.cloud.domain.User;
-import co.edu.uniandes.cloud.repository.AuthorityRepository;
-import co.edu.uniandes.cloud.config.Constants;
-import co.edu.uniandes.cloud.repository.UserRepository;
+import co.edu.uniandes.cloud.repository.jpa.AuthorityRepository;
+import co.edu.uniandes.cloud.repository.jpa.UserRepository;
 import co.edu.uniandes.cloud.security.AuthoritiesConstants;
 import co.edu.uniandes.cloud.security.SecurityUtils;
-import co.edu.uniandes.cloud.service.util.RandomUtil;
 import co.edu.uniandes.cloud.service.dto.UserDTO;
-
+import co.edu.uniandes.cloud.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -21,7 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

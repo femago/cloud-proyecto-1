@@ -111,7 +111,7 @@ public class ApplicationResource {
      */
     @GetMapping("/applications/{id}")
     @Timed
-    public ResponseEntity<Application> getApplication(@PathVariable Long id) {
+    public ResponseEntity<Application> getApplication(@PathVariable String id) {
         log.debug("REST request to get Application : {}", id);
         Application application = applicationService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(application));
@@ -125,7 +125,7 @@ public class ApplicationResource {
      */
     @DeleteMapping("/applications/{id}")
     @Timed
-    public ResponseEntity<Void> deleteApplication(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteApplication(@PathVariable String id) {
         log.debug("REST request to delete Application : {}", id);
         applicationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
@@ -139,7 +139,7 @@ public class ApplicationResource {
      */
     @GetMapping("/applications/contests/{contestId}")
     @Timed
-    public ResponseEntity<List<Application>> getApplicationsByContest(Pageable pageable, @PathVariable Long contestId) {
+    public ResponseEntity<List<Application>> getApplicationsByContest(Pageable pageable, @PathVariable String contestId) {
         log.debug("REST request to get a list of Applications by Contest");
         Page<Application> page = applicationService.findConvertedByContest(pageable, contestId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/applications/contests/" + contestId);
@@ -154,7 +154,7 @@ public class ApplicationResource {
      */
     @GetMapping("/applications/contests/{contestId}/principal")
     @Timed
-    public ResponseEntity<List<Application>> getApplicationsByContestPrincipal(Pageable pageable, @PathVariable Long contestId) {
+    public ResponseEntity<List<Application>> getApplicationsByContestPrincipal(Pageable pageable, @PathVariable String contestId) {
         log.debug("REST request to get a page of Applications by Contest principal");
         Page<Application> page = applicationService.findByContest(pageable, contestId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/applications/contests/" + contestId + "/principal");
@@ -163,7 +163,7 @@ public class ApplicationResource {
 
     @GetMapping("/applications/{id}/voice/original")
     @Timed
-    public ResponseEntity<Resource> downloadOriginalVoice(@PathVariable Long id) throws IOException {
+    public ResponseEntity<Resource> downloadOriginalVoice(@PathVariable String id) throws IOException {
         log.debug("REST request to get original voice for Application : {}", id);
         final VoiceFileData voiceFileData = applicationService.fileOriginalVoice(id);
         return ResponseEntity.ok()
@@ -174,7 +174,7 @@ public class ApplicationResource {
 
     @GetMapping("/applications/{id}/voice/converted")
     @Timed
-    public ResponseEntity<Resource> downloadConvertedVoice(@PathVariable Long id) throws IOException {
+    public ResponseEntity<Resource> downloadConvertedVoice(@PathVariable String id) throws IOException {
         log.debug("REST request to get converted voice for Application : {}", id);
         final VoiceFileData voiceFileData = applicationService.fileConvertedVoice(id);
         return ResponseEntity.ok()
