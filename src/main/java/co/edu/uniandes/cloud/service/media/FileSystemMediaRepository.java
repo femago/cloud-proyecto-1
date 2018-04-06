@@ -14,7 +14,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_NO_S3;
+import static co.edu.uniandes.cloud.config.Constants.CLOICE_PROFILE_NO_S3;
 
 @Service
 @Profile(CLOICE_PROFILE_NO_S3)

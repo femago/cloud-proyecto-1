@@ -15,13 +15,6 @@ import java.nio.file.Paths;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
-    public static final String CLOICE_PROFILE_S3 = "s3";
-    public static final String CLOICE_PROFILE_NO_S3 = "!s3";
-    public static final String CLOICE_PROFILE_SQS = "sqs";
-    public static final String CLOICE_PROFILE_NO_SQS = "!sqs";
-    public static final String CLOICE_PROFILE_SQS_WORKER = "wk-sqs";
-    public static final String CLOICE_PROFILE_SCH_WORKER = "wk-sch";
-
     private final Folder folder = new Folder();
     private final AWS aws = new AWS();
 

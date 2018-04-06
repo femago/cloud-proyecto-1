@@ -1,6 +1,7 @@
 package co.edu.uniandes.cloud.repository.dynamo;
 
-import co.edu.uniandes.cloud.config.DynamoDBConfig;
+import co.edu.uniandes.cloud.config.Constants;
+import co.edu.uniandes.cloud.config.dynamo.DynamoDBConfig;
 import co.edu.uniandes.cloud.domain.Application;
 import co.edu.uniandes.cloud.domain.Contest;
 import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
@@ -36,7 +37,7 @@ import static org.junit.Assert.assertTrue;
     "amazon.dynamodb.endpoint=http://localhost:8000/",
     "amazon.aws.accesskey=test1",
     "amazon.aws.secretkey=test231"})
-@ActiveProfiles(DynamoDBConfig.SPRING_PROFILE_DYNAMODB)
+@ActiveProfiles(Constants.CLOICE_PROFILE_DYNAMODB)
 public class ApplicationDynamoRepositoryTest {
 
     @ClassRule

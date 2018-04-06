@@ -1,5 +1,6 @@
-package co.edu.uniandes.cloud.config;
+package co.edu.uniandes.cloud.config.dynamo;
 
+import co.edu.uniandes.cloud.config.Constants;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -15,10 +16,8 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @EnableDynamoDBRepositories(basePackages = "co.edu.uniandes.cloud.repository.dynamo")
-@Profile(DynamoDBConfig.SPRING_PROFILE_DYNAMODB)
+@Profile(Constants.CLOICE_PROFILE_DYNAMODB)
 public class DynamoDBConfig {
-
-    public static final String SPRING_PROFILE_DYNAMODB = "dynamo";
 
     @Value("${amazon.dynamodb.endpoint}")
     private String amazonDynamoDBEndpoint;

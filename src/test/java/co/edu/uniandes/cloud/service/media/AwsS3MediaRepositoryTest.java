@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_S3;
+import static co.edu.uniandes.cloud.config.Constants.CLOICE_PROFILE_S3;
 
 
 @RunWith(SpringRunner.class)

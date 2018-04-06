@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_NO_SQS;
+import static co.edu.uniandes.cloud.config.Constants.CLOICE_PROFILE_NO_SQS;
 
 @Component
 @Profile(CLOICE_PROFILE_NO_SQS)

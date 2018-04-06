@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_S3;
+import static co.edu.uniandes.cloud.config.Constants.CLOICE_PROFILE_S3;
 
 @Service
 @Profile(CLOICE_PROFILE_S3)

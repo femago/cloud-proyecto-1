@@ -23,8 +23,8 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_SCH_WORKER;
-import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_SQS_WORKER;
+import static co.edu.uniandes.cloud.config.Constants.CLOICE_PROFILE_SCH_WORKER;
+import static co.edu.uniandes.cloud.config.Constants.CLOICE_PROFILE_SQS_WORKER;
 
 @Service
 @Transactional
@@ -42,7 +42,9 @@ public class VoiceEncoderService {
     private final FFmpeg ffmpeg;
     private final FFprobe ffprobe;
 
-    public VoiceEncoderService(ApplicationRepository applicationRepository, ApplicationProperties applicationProperties, VoicesMediaRepository mediaRepository) throws IOException {
+    public VoiceEncoderService(ApplicationRepository applicationRepository,
+                               ApplicationProperties applicationProperties,
+                               VoicesMediaRepository mediaRepository) throws IOException {
         this.applicationRepository = applicationRepository;
         this.applicationProperties = applicationProperties;
         this.mediaRepository = mediaRepository;

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_SQS_WORKER;
+import static co.edu.uniandes.cloud.config.Constants.CLOICE_PROFILE_SQS_WORKER;
 
 @Service
 @Profile(CLOICE_PROFILE_SQS_WORKER)
@@ -63,7 +63,7 @@ public class AwsSQSWorkerService extends WorkerTriggerService implements Runnabl
         try {
             log.info("Processing SQS Message {}", msg);
             // Garantizar que ninguna excepcion sale para evitar romper el thread que se queda escuchando por mensajes
-            final Application app = applicationRepository.findOne(Long.valueOf(msg.getBody()));
+            final Application app = applicationRepository.findOne(msg.getBody());
             if (!super.isApplicationTbp(app)) {
                 log.info("Message with an already processed application {}", app);
                 removeFromSQS(msg);

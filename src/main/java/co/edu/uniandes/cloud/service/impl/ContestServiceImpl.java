@@ -2,7 +2,7 @@ package co.edu.uniandes.cloud.service.impl;
 
 import co.edu.uniandes.cloud.domain.Contest;
 import co.edu.uniandes.cloud.domain.User;
-import co.edu.uniandes.cloud.repository.jpa.ContestJpaRepository;
+import co.edu.uniandes.cloud.repository.ContestRepository;
 import co.edu.uniandes.cloud.repository.jpa.UserRepository;
 import co.edu.uniandes.cloud.security.SecurityUtils;
 import co.edu.uniandes.cloud.service.ContestService;
@@ -28,10 +28,10 @@ public class ContestServiceImpl implements ContestService {
 
     private final Logger log = LoggerFactory.getLogger(ContestServiceImpl.class);
 
-    private final ContestJpaRepository contestRepository;
+    private final ContestRepository contestRepository;
     private final UserRepository userRepository;
 
-    public ContestServiceImpl(ContestJpaRepository contestRepository, UserRepository userRepository) {
+    public ContestServiceImpl(ContestRepository contestRepository, UserRepository userRepository) {
         this.contestRepository = contestRepository;
         this.userRepository = userRepository;
     }

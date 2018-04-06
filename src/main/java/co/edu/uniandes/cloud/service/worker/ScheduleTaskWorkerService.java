@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_SCH_WORKER;
+import static co.edu.uniandes.cloud.config.Constants.CLOICE_PROFILE_SCH_WORKER;
 
 @Service
 @Profile(CLOICE_PROFILE_SCH_WORKER)
@@ -30,7 +30,7 @@ public class ScheduleTaskWorkerService extends WorkerTriggerService {
     @Scheduled(fixedRate = 60000)
     public void processPendingVoices() {
         log.info("Start encoding pending applications");
-        final List<Application> statusInProcess = applicationRepository.findByStatusEquals(ApplicationState.IN_PROCESS);
+        final List<Application> statusInProcess = applicationRepository.findByStatus(ApplicationState.IN_PROCESS);
         Stopwatch stopwatch = Stopwatch.createStarted();
         statusInProcess.parallelStream()
             .filter(super::isApplicationTbp)

@@ -4,7 +4,7 @@ import co.edu.uniandes.cloud.config.ApplicationProperties;
 import co.edu.uniandes.cloud.domain.Application;
 import co.edu.uniandes.cloud.domain.Contest;
 import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
-import co.edu.uniandes.cloud.repository.jpa.ApplicationJpaRepository;
+import co.edu.uniandes.cloud.repository.ApplicationRepository;
 import co.edu.uniandes.cloud.service.ApplicationService;
 import co.edu.uniandes.cloud.service.dto.VoiceFileData;
 import co.edu.uniandes.cloud.service.media.VoicesMediaRepository;
@@ -36,12 +36,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     public static final String ORIGINAL_VOICE_MARKER = "_orig_";
     private final Logger log = LoggerFactory.getLogger(ApplicationServiceImpl.class);
 
-    private final ApplicationJpaRepository applicationRepository;
+    private final ApplicationRepository applicationRepository;
     private final ApplicationProperties applicationProperties;
     private final VoicesMediaRepository mediaRepository;
     private final ApplicationEventEmitter eventEmitter;
 
-    public ApplicationServiceImpl(ApplicationJpaRepository applicationRepository,
+    public ApplicationServiceImpl(ApplicationRepository applicationRepository,
                                   ApplicationProperties applicationProperties,
                                   VoicesMediaRepository mediaRepository,
                                   ApplicationEventEmitter eventEmitter) {

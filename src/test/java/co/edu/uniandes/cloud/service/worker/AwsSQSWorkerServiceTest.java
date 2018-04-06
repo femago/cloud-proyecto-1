@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static co.edu.uniandes.cloud.config.ApplicationProperties.CLOICE_PROFILE_SQS_WORKER;
+import static co.edu.uniandes.cloud.config.Constants.CLOICE_PROFILE_SQS_WORKER;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -51,7 +51,7 @@ public class AwsSQSWorkerServiceTest {
         Mockito.doAnswer(invocation -> {
             latch.countDown();
             return new Application().status(ApplicationState.CONVERTED);
-        }).when(mockedRepo).findOne(Mockito.anyLong());
+        }).when(mockedRepo).findOne(Mockito.anyString());
 
         SendMessageBatchRequest send_batch_request = new SendMessageBatchRequest()
             .withQueueUrl(queueUrl)
