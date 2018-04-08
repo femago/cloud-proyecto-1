@@ -34,7 +34,7 @@ public class AwsSQSWorkerService extends WorkerTriggerService implements Runnabl
     private final ReceiveMessageRequest rq;
 
     public AwsSQSWorkerService(VoiceEncoderService voiceEncoderService, MailService mailService, ApplicationRepository applicationRepository,
-                               @Value("${application.aws.sqs-reconnection-rate-seconds}") int reconnection_rate_seconds) {
+                               @Value("${amazon.sqs.reconnection-rate-seconds}") int reconnection_rate_seconds) {
         super(LoggerFactory.getLogger(AwsSQSWorkerService.class), voiceEncoderService, mailService);
         this.applicationRepository = applicationRepository;
         sqs = AmazonSQSClientBuilder.defaultClient();

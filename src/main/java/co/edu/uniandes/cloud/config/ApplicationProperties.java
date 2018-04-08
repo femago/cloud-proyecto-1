@@ -16,14 +16,9 @@ import java.nio.file.Paths;
 public class ApplicationProperties {
 
     private final Folder folder = new Folder();
-    private final AWS aws = new AWS();
 
     public Folder getFolder() {
         return folder;
-    }
-
-    public AWS getAws() {
-        return aws;
     }
 
     public static class Folder {
@@ -44,18 +39,6 @@ public class ApplicationProperties {
 
         public void setVoicesArchive(String voicesArchive) throws IOException {
             this.voicesArchive = Paths.get(voicesArchive);
-        }
-    }
-
-    public static class AWS {
-        private long sqsReconnectionRateSeconds;
-
-        public long getSqsReconnectionRateSeconds() {
-            return sqsReconnectionRateSeconds;
-        }
-
-        public void setSqsReconnectionRateSeconds(String sqsReconnectionRateSeconds) {
-            this.sqsReconnectionRateSeconds = Long.valueOf(sqsReconnectionRateSeconds);
         }
     }
 }
