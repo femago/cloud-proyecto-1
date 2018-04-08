@@ -1,9 +1,9 @@
 package co.edu.uniandes.cloud.config.dynamo;
 
 import co.edu.uniandes.cloud.config.Constants;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import org.apache.commons.lang3.StringUtils;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,15 +20,9 @@ public class DynamoDBConfig {
 
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
-        //AmazonDynamoDBClientBuilder.standard().withCredentials(amazonAWSCredentialsProvider());
-        AmazonDynamoDB amazonDynamoDB
-            = AmazonDynamoDBClientBuilder.defaultClient();
-
-        if (!StringUtils.isEmpty(amazonDynamoDBEndpoint)) {
-            amazonDynamoDB.setEndpoint(amazonDynamoDBEndpoint);
-        }
-
-        return amazonDynamoDB;
+        return AmazonDynamoDBClientBuilder.standard()
+            .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(amazonDynamoDBEndpoint, "us-east-1"))
+             .build();
     }
 
 }

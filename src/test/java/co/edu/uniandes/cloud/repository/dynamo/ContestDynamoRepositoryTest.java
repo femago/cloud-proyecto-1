@@ -10,6 +10,7 @@ import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.model.ResourceInUseException;
 import com.baeldung.spring.data.dynamodb.repository.rule.LocalDbCreationRule;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -31,9 +32,8 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DynamoDBConfig.class})
 @TestPropertySource(properties = {
-    "amazon.dynamodb.endpoint=http://localhost:8000/",
-    "amazon.aws.accesskey=test1",
-    "amazon.aws.secretkey=test231"})
+    "amazon.dynamodb.endpoint=http://localhost:8000/"})
+//"amazon.dynamodb.endpoint=dynamodb.us-east-1.amazonaws.com"})
 @ActiveProfiles(Constants.CLOICE_PROFILE_DYNAMODB)
 public class ContestDynamoRepositoryTest {
 
@@ -60,7 +60,12 @@ public class ContestDynamoRepositoryTest {
             amazonDynamoDB.createTable(tableRequest);
         } catch (ResourceInUseException e) {
         }
-        dynamoDBMapper.batchDelete(repo.findAll());
+        repo.deleteAll();
+    }
+
+    @After
+    public void tearDown() {
+        repo.deleteAll();
     }
 
     @Test

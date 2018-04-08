@@ -34,9 +34,8 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DynamoDBConfig.class})
 @TestPropertySource(properties = {
-    "amazon.dynamodb.endpoint=http://localhost:8000/",
-    "amazon.aws.accesskey=test1",
-    "amazon.aws.secretkey=test231"})
+    "amazon.dynamodb.endpoint=dynamodb.us-east-1.amazonaws.com"})
+//    "amazon.dynamodb.endpoint=dynamodb.us-east-1.amazonaws.com"})
 @ActiveProfiles(Constants.CLOICE_PROFILE_DYNAMODB)
 public class ApplicationDynamoRepositoryTest {
 
@@ -63,11 +62,12 @@ public class ApplicationDynamoRepositoryTest {
             amazonDynamoDB.createTable(tableRequest);
         } catch (ResourceInUseException e) {
         }
-        dynamoDBMapper.batchDelete(repo.findAll());
+        repo.deleteAll();
     }
 
     @After
     public void tearDown() {
+        repo.deleteAll();
     }
 
     @Test
