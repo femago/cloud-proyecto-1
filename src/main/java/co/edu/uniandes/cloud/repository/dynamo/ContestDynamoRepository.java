@@ -4,9 +4,14 @@ import co.edu.uniandes.cloud.domain.Contest;
 import co.edu.uniandes.cloud.repository.ContestRepository;
 import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
 import org.socialsignin.spring.data.dynamodb.repository.EnableScanCount;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 @EnableScan
 @EnableScanCount
-public interface ContestDynamoRepository extends PagingAndSortingRepository<Contest, String>, ContestRepository {
+public interface ContestDynamoRepository extends PagingAndSortingRepository<Contest, String>,
+    ContestRepository {
+
+    Page<Contest> findByEqkey(String eqkey, Pageable pageable);
 }

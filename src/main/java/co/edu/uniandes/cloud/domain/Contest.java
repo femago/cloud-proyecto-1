@@ -97,6 +97,9 @@ public class Contest implements Serializable {
     @DynamoDBMarshalling(marshallerClass = DynamoConverters.UserConverter.class)
     private User user;
 
+    @Transient
+    private String eqkey="CONTEST";
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public String getId() {
         return id;

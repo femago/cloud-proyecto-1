@@ -6,16 +6,13 @@ import co.edu.uniandes.cloud.domain.Contest;
 import co.edu.uniandes.cloud.domain.User;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
-import com.amazonaws.services.dynamodbv2.model.ResourceInUseException;
 import com.baeldung.spring.data.dynamodb.repository.rule.LocalDbCreationRule;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -32,8 +29,8 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DynamoDBConfig.class})
 @TestPropertySource(properties = {
-    "amazon.dynamodb.endpoint=http://localhost:8000/"})
-//"amazon.dynamodb.endpoint=dynamodb.us-east-1.amazonaws.com"})
+//    "amazon.dynamodb.endpoint=http://localhost:8000/"})
+"amazon.dynamodb.endpoint=dynamodb.us-east-1.amazonaws.com"})
 @ActiveProfiles(Constants.CLOICE_PROFILE_DYNAMODB)
 public class ContestDynamoRepositoryTest {
 
@@ -53,13 +50,13 @@ public class ContestDynamoRepositoryTest {
 
     @Before
     public void setUp() {
-        try {
-            dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
-            CreateTableRequest tableRequest = dynamoDBMapper.generateCreateTableRequest(Contest.class);
-            tableRequest.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L));
-            amazonDynamoDB.createTable(tableRequest);
-        } catch (ResourceInUseException e) {
-        }
+//        try {
+//            dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
+//            CreateTableRequest tableRequest = dynamoDBMapper.generateCreateTableRequest(Contest.class);
+//            tableRequest.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L));
+//            amazonDynamoDB.createTable(tableRequest);
+//        } catch (ResourceInUseException e) {
+//        }
         repo.deleteAll();
     }
 
@@ -69,6 +66,7 @@ public class ContestDynamoRepositoryTest {
     }
 
     @Test
+    @Ignore
     public void save() {
         Contest cnts = factory.manufacturePojo(Contest.class);
         cnts.setId(null);
@@ -92,5 +90,11 @@ public class ContestDynamoRepositoryTest {
         final User user = new User();
         user.setLogin(cnts.getUser().getLogin());
         cnts.user(user);
+    }
+
+    @Test
+    public void testFindAllPaged() {
+        Sort sort = new Sort("createDate","id");
+        Page<Contest> all = repo.findAll(new PageRequest(0, 20, sort));
     }
 }
