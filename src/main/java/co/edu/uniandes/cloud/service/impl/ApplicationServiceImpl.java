@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -133,7 +134,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Page<Application> findConvertedByContest(Pageable pageable, String contestId) {
         log.debug("Request to get Converted Applications by Contest");
-        return resolveMediaLocation(applicationRepository.findByStatusAndContest(pageable, ApplicationState.CONVERTED, new Contest(contestId)));
+        PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize());
+        return resolveMediaLocation(applicationRepository.findByStatusAndContest(pageRequest, ApplicationState.CONVERTED, new Contest(contestId)));
     }
 
     /**
