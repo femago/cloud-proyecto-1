@@ -54,6 +54,7 @@ public class ContestDynamoRepositoryTest {
 //            dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
 //            CreateTableRequest tableRequest = dynamoDBMapper.generateCreateTableRequest(Contest.class);
 //            tableRequest.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L));
+//            tableRequest.getGlobalSecondaryIndexes().forEach(gsi -> gsi.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L)));
 //            amazonDynamoDB.createTable(tableRequest);
 //        } catch (ResourceInUseException e) {
 //        }

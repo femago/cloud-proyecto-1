@@ -46,6 +46,7 @@ public class Contest implements Serializable {
     @Column(name = "create_date", nullable = false)
     @DynamoDBAttribute
     @DynamoDBTypeConverted(converter = DynamoConverters.InstantConverter.class)
+    @DynamoDBIndexRangeKey(globalSecondaryIndexName = "contest-creationdate-index")
     private Instant createDate;
 
     @NotNull
@@ -98,6 +99,7 @@ public class Contest implements Serializable {
     private User user;
 
     @Transient
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "contest-creationdate-index")
     private String eqkey="CONTEST";
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -277,6 +279,15 @@ public class Contest implements Serializable {
         this.user = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+
+    public String getEqkey() {
+        return eqkey;
+    }
+
+    public void setEqkey(String eqkey) {
+        this.eqkey = eqkey;
+    }
 
     @Override
     public boolean equals(Object o) {
