@@ -33,7 +33,7 @@
                 <td>{{application.lastname}}</td>
                 <td>{{application.createDate | date:'medium'}}</td>
                 <td>
-                    <button *ngIf="application.originalRecord"
+                    <button *ngIf="application.originalRecordURL"
                             type="submit"
                             (click)="downloadVoice(application)"
                             class="btn btn-success">

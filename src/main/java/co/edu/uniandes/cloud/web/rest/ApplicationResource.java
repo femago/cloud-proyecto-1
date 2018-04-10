@@ -141,6 +141,7 @@ public class ApplicationResource {
     @Timed
     public ResponseEntity<List<Application>> getApplicationsByContest(Pageable pageable, @PathVariable String contestId) {
         log.debug("REST request to get a list of Applications by Contest");
+        pageable = PaginationUtil.adjustPageable(pageable);
         Page<Application> page = applicationService.findConvertedByContest(pageable, contestId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/applications/contests/" + contestId);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -156,6 +157,7 @@ public class ApplicationResource {
     @Timed
     public ResponseEntity<List<Application>> getApplicationsByContestPrincipal(Pageable pageable, @PathVariable String contestId) {
         log.debug("REST request to get a page of Applications by Contest principal");
+        pageable = PaginationUtil.adjustPageable(pageable);
         Page<Application> page = applicationService.findByContest(pageable, contestId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/applications/contests/" + contestId + "/principal");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

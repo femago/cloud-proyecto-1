@@ -133,7 +133,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Page<Application> findConvertedByContest(Pageable pageable, String contestId) {
         log.debug("Request to get Converted Applications by Contest");
-        return applicationRepository.findByStatusAndContest(pageable, ApplicationState.CONVERTED, new Contest(contestId));
+        return resolveMediaLocation(applicationRepository.findByStatusAndContest(pageable, ApplicationState.CONVERTED, new Contest(contestId)));
     }
 
     /**
@@ -146,7 +146,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Page<Application> findByContest(Pageable pageable, String contestId) {
         log.debug("Request to get Applications by Contest");
-        return applicationRepository.findByContest(pageable, new Contest(contestId));
+        return resolveMediaLocation(applicationRepository.findByContest(pageable, new Contest(contestId)));
     }
 
     @Override
