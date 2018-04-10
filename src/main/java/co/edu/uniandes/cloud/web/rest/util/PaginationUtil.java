@@ -1,12 +1,19 @@
 package co.edu.uniandes.cloud.web.rest.util;
 
+import com.google.common.collect.Iterators;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Iterator;
+import java.util.Optional;
+import java.util.stream.StreamSupport;
+
 /**
  * Utility class for handling pagination.
- *
+ * <p>
  * <p>
  * Pagination uses the same principles as the <a href="https://developer.github.com/v3/#pagination">GitHub API</a>,
  * and follow <a href="http://tools.ietf.org/html/rfc5988">RFC 5988 (Link header)</a>.
@@ -41,5 +48,24 @@ public final class PaginationUtil {
 
     private static String generateUri(String baseUrl, int page, int size) {
         return UriComponentsBuilder.fromUriString(baseUrl).queryParam("page", page).queryParam("size", size).toUriString();
+    }
+
+    public static Pageable adjustPageable(Pageable pageable) {
+        Sort sort = pageable.getSort();
+        if (Iterators.size(sort.iterator()) <= 1) {
+            return pageable;
+        }
+        Optional<Sort.Order> id = StreamSupport.stream(sort.spliterator(), false)
+            .filter(order -> order.getProperty().equals("id")).findFirst();
+        Iterator<Sort.Order> it = sort.iterator();
+        id.ifPresent(order -> {
+            while (it.hasNext()) {
+                if (it.next().equals(order)) {
+                    it.remove();
+                    break;
+                }
+            }
+        });
+        return pageable;
     }
 }

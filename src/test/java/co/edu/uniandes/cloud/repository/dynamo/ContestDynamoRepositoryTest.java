@@ -6,6 +6,7 @@ import co.edu.uniandes.cloud.domain.Contest;
 import co.edu.uniandes.cloud.domain.User;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.model.*;
 import com.baeldung.spring.data.dynamodb.repository.rule.LocalDbCreationRule;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -30,7 +31,7 @@ import static org.junit.Assert.assertThat;
 @ContextConfiguration(classes = {DynamoDBConfig.class})
 @TestPropertySource(properties = {
 //    "amazon.dynamodb.endpoint=http://localhost:8000/"})
-"amazon.dynamodb.endpoint=dynamodb.us-east-1.amazonaws.com"})
+    "amazon.dynamodb.endpoint=dynamodb.us-east-1.amazonaws.com"})
 @ActiveProfiles(Constants.CLOICE_PROFILE_DYNAMODB)
 public class ContestDynamoRepositoryTest {
 
@@ -50,20 +51,27 @@ public class ContestDynamoRepositoryTest {
 
     @Before
     public void setUp() {
-//        try {
-//            dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
-//            CreateTableRequest tableRequest = dynamoDBMapper.generateCreateTableRequest(Contest.class);
-//            tableRequest.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L));
-//            tableRequest.getGlobalSecondaryIndexes().forEach(gsi -> gsi.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L)));
-//            amazonDynamoDB.createTable(tableRequest);
-//        } catch (ResourceInUseException e) {
-//        }
-        repo.deleteAll();
+        if (true) {
+            try {
+                dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
+                CreateTableRequest tableRequest = dynamoDBMapper.generateCreateTableRequest(Contest.class);
+                tableRequest.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L));
+                Projection projection = new Projection().withProjectionType(ProjectionType.ALL);
+                tableRequest.getGlobalSecondaryIndexes()
+                    .forEach(gsi -> {
+                        gsi.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L));
+                        gsi.setProjection(projection);
+                });
+                amazonDynamoDB.createTable(tableRequest);
+            } catch (ResourceInUseException e) {
+            }
+          repo.deleteAll();
+        }
     }
 
     @After
     public void tearDown() {
-        repo.deleteAll();
+       // repo.deleteAll();
     }
 
     @Test
@@ -95,7 +103,8 @@ public class ContestDynamoRepositoryTest {
 
     @Test
     public void testFindAllPaged() {
-        Sort sort = new Sort("createDate","id");
+        Sort sort = new Sort("createDate");
         Page<Contest> all = repo.findAll(new PageRequest(0, 20, sort));
+        assertTrue(!all.getContent().isEmpty());
     }
 }
