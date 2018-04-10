@@ -8,15 +8,13 @@ import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
 import co.edu.uniandes.cloud.repository.EntitiesBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
-import com.amazonaws.services.dynamodbv2.model.ResourceInUseException;
 import com.baeldung.spring.data.dynamodb.repository.rule.LocalDbCreationRule;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -55,19 +53,19 @@ public class ApplicationDynamoRepositoryTest {
 
     @Before
     public void setUp() {
-        try {
-            dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
-            CreateTableRequest tableRequest = dynamoDBMapper.generateCreateTableRequest(Application.class);
-            tableRequest.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L));
-            amazonDynamoDB.createTable(tableRequest);
-        } catch (ResourceInUseException e) {
-        }
-        repo.deleteAll();
+//        try {
+//            dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
+//            CreateTableRequest tableRequest = dynamoDBMapper.generateCreateTableRequest(Application.class);
+//            tableRequest.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L));
+//            amazonDynamoDB.createTable(tableRequest);
+//        } catch (ResourceInUseException e) {
+//        }
+//        repo.deleteAll();
     }
 
     @After
     public void tearDown() {
-        repo.deleteAll();
+//        repo.deleteAll();
     }
 
     @Test
@@ -96,16 +94,25 @@ public class ApplicationDynamoRepositoryTest {
 
     @Test
     public void findByContest() {
-        saveApplication();
-        saveApplication();
-        saveApplication();
-        saveApplication();
+//        saveApplication();
+//        saveApplication();
+//        saveApplication();
+//        saveApplication();
         Page<Application> byContest = repo.findByContest(new PageRequest(0, 2), application.getContest());
         assertThat(byContest.getTotalPages(), is(2));
         assertThat(byContest.getTotalElements(), is(4L));
 
         byContest = repo.findByContest(new PageRequest(0, 2), new Contest("fake_id"));
         assertThat(byContest.getTotalElements(), is(0L));
+    }
+
+    @Test
+    public void dynFindByContest() {
+        Sort sort = new Sort("createDate");
+        Contest contest = new Contest("d90776ba-838a-49a0-b7ed-7b22b72f3d1b");
+        Page<Application> byContest = repo.findByContest(new PageRequest(0, 2, sort), contest);
+        assertTrue(!byContest.getContent().isEmpty());
+        System.out.println(byContest.getContent());
     }
 
     @Test

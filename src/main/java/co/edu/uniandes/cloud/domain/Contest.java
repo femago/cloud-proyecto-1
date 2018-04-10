@@ -46,7 +46,7 @@ public class Contest implements Serializable {
     @Column(name = "create_date", nullable = false)
     @DynamoDBAttribute
     @DynamoDBTypeConverted(converter = DynamoConverters.InstantConverter.class)
-    @DynamoDBIndexRangeKey(globalSecondaryIndexName = "contest-creationdate-index")
+    @DynamoDBIndexRangeKey(globalSecondaryIndexNames = {"contest-creationdate-index","user-createDate-index"})
     private Instant createDate;
 
     @NotNull
@@ -96,6 +96,7 @@ public class Contest implements Serializable {
 
     @ManyToOne(optional = false)
     @DynamoDBMarshalling(marshallerClass = DynamoConverters.UserConverter.class)
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "user-createDate-index")
     private User user;
 
     @Transient

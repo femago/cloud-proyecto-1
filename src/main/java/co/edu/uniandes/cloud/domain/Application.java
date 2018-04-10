@@ -2,11 +2,10 @@ package co.edu.uniandes.cloud.domain;
 
 
 import co.edu.uniandes.cloud.domain.enumeration.ApplicationState;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import co.edu.uniandes.cloud.repository.dynamo.DynamoConverters;
 import co.edu.uniandes.cloud.repository.jpa.JpaConverters;
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -42,6 +41,7 @@ public class Application implements Serializable {
 
     @Column(name = "create_date", nullable = false)
     @DynamoDBTypeConverted(converter = DynamoConverters.InstantConverter.class)
+    @DynamoDBIndexRangeKey(globalSecondaryIndexNames = {"contest-createDate-index"})
     private Instant createDate;
 
     @NotNull
@@ -88,6 +88,7 @@ public class Application implements Serializable {
 
     @ManyToOne
     @DynamoDBMarshalling(marshallerClass = DynamoConverters.ContestConverter.class)
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "contest-createDate-index")
     private Contest contest;
 
     @JsonProperty
