@@ -22,6 +22,7 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.util.Iterator;
+import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.Is.is;
@@ -51,7 +52,7 @@ public class ContestDynamoRepositoryTest {
 
     @Before
     public void setUp() {
-        if (true) {
+        if (false) {
             try {
                 dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
                 CreateTableRequest tableRequest = dynamoDBMapper.generateCreateTableRequest(Contest.class);
@@ -61,17 +62,17 @@ public class ContestDynamoRepositoryTest {
                     .forEach(gsi -> {
                         gsi.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L));
                         gsi.setProjection(projection);
-                });
+                    });
                 amazonDynamoDB.createTable(tableRequest);
             } catch (ResourceInUseException e) {
             }
-          repo.deleteAll();
+            repo.deleteAll();
         }
     }
 
     @After
     public void tearDown() {
-       // repo.deleteAll();
+        // repo.deleteAll();
     }
 
     @Test
@@ -106,5 +107,16 @@ public class ContestDynamoRepositoryTest {
         Sort sort = new Sort("createDate");
         Page<Contest> all = repo.findAll(new PageRequest(0, 20, sort));
         assertTrue(!all.getContent().isEmpty());
+    }
+
+    @Test
+    public void testFindByUser() {
+        Sort sort = new Sort("createDate");
+        User user1 = new User();
+        user1.setLogin("user");
+        Page<Contest> user = repo.findByUser(new PageRequest(0, 20, sort), user1);
+        List<Contest> content = user.getContent();
+        assertTrue(!content.isEmpty());
+        System.out.println(content.size() + " " + content);
     }
 }

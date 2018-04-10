@@ -107,6 +107,7 @@ public class ContestResource {
     @Timed
     public ResponseEntity<List<Contest>> getByPrincipal(Pageable pageable) {
         log.debug("REST request to get a page of Contests by Principal");
+        pageable = PaginationUtil.adjustPageable(pageable);
         Page<Contest> page = contestService.findByCurrentUser(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contests/principal");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

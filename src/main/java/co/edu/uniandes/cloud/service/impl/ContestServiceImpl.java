@@ -91,8 +91,10 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public Page<Contest> findByCurrentUser(Pageable pageable) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.debug("Request to get all Contest by User {}",authentication.getName());
-        return contestRepository.findByUser_Login(pageable, authentication.getName());
+        log.debug("Request to get all Contest by User {}", authentication.getName());
+        User user = new User();
+        user.setLogin(authentication.getName());
+        return contestRepository.findByUser(pageable, user);
     }
 
     @Override
