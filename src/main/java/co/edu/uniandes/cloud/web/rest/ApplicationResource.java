@@ -173,7 +173,8 @@ public class ApplicationResource {
                 .contentLength(voiceFileData.getContent().contentLength())
                 .contentType(MediaType.parseMediaType(voiceFileData.getContentType()))
                 .body(voiceFileData.getContent());
-        } catch (IOException e) {
+        } catch (Exception e) {
+            log.error(e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }
@@ -189,7 +190,8 @@ public class ApplicationResource {
                 .contentLength(voiceFileData.getContent().contentLength())
                 .contentType(MediaType.parseMediaType(voiceFileData.getContentType()))
                 .body(voiceFileData.getContent());
-        } catch (IOException e) {
+        } catch (Exception e) {
+            log.error(e.getMessage());
             return ResponseEntity.notFound().build();
         }
 

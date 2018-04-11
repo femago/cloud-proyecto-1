@@ -180,7 +180,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private Application resolveMediaLocation(Application application) {
-        final boolean isS3 = application.getOriginalRecordLocation().startsWith(S3_FILE_PREFIX);
+        final boolean isS3 = nullLocation(application) ? false : application.getOriginalRecordLocation().startsWith(S3_FILE_PREFIX);
         if (isS3) {
             if (ApplicationState.IN_PROCESS.equals(application.getStatus())) {
                 application.setOriginalRecordURL("https://s3.amazonaws.com/uniandes-cloud-cloice/voices/tbp/" + application.getOriginalRecordLocation());
@@ -193,6 +193,10 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setConvertedRecordURL(application.getId() + "/voice/converted");
         }
         return application;
+    }
+
+    private boolean nullLocation(Application application) {
+        return application.getOriginalRecordLocation() == null;
     }
 
 }
