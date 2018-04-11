@@ -205,11 +205,11 @@ dependencies {
     compile 'com.amazonaws:aws-java-sdk-s3:1.11.64'
     compile 'com.amazonaws:aws-java-sdk-sqs:1.11.64'
     compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.64'
-    compile 'com.amazonaws:DynamoDBLocal:1.11.86'
     compile 'com.github.derjust:spring-data-dynamodb:4.5.1'
 
     testCompileOnly "org.projectlombok:lombok:1.16.20"
     testApt "org.projectlombok:lombok:1.16.20"
+    testCompile 'com.amazonaws:DynamoDBLocal:1.11.86'
     testCompile "com.jayway.jsonpath:json-path"
     testCompile ("org.springframework.boot:spring-boot-starter-test") {
         exclude group: 'com.vaadin.external.google', module: 'android-json'

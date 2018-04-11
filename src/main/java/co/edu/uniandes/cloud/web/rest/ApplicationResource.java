@@ -167,21 +167,31 @@ public class ApplicationResource {
     @Timed
     public ResponseEntity<Resource> downloadOriginalVoice(@PathVariable String id) throws IOException {
         log.debug("REST request to get original voice for Application : {}", id);
-        final VoiceFileData voiceFileData = applicationService.fileOriginalVoice(id);
-        return ResponseEntity.ok()
-            .contentLength(voiceFileData.getContent().contentLength())
-            .contentType(MediaType.parseMediaType(voiceFileData.getContentType()))
-            .body(voiceFileData.getContent());
+        try {
+            final VoiceFileData voiceFileData = applicationService.fileOriginalVoice(id);
+            return ResponseEntity.ok()
+                .contentLength(voiceFileData.getContent().contentLength())
+                .contentType(MediaType.parseMediaType(voiceFileData.getContentType()))
+                .body(voiceFileData.getContent());
+        } catch (IOException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/applications/{id}/voice/converted")
     @Timed
-    public ResponseEntity<Resource> downloadConvertedVoice(@PathVariable String id) throws IOException {
+    public ResponseEntity<Resource> downloadConvertedVoice(@PathVariable String id) {
         log.debug("REST request to get converted voice for Application : {}", id);
-        final VoiceFileData voiceFileData = applicationService.fileConvertedVoice(id);
-        return ResponseEntity.ok()
-            .contentLength(voiceFileData.getContent().contentLength())
-            .contentType(MediaType.parseMediaType(voiceFileData.getContentType()))
-            .body(voiceFileData.getContent());
+        final VoiceFileData voiceFileData;
+        try {
+            voiceFileData = applicationService.fileConvertedVoice(id);
+            return ResponseEntity.ok()
+                .contentLength(voiceFileData.getContent().contentLength())
+                .contentType(MediaType.parseMediaType(voiceFileData.getContentType()))
+                .body(voiceFileData.getContent());
+        } catch (IOException e) {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 }
