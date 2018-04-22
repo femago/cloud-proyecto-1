@@ -4,3 +4,4 @@ build:
     - openjdk-8-jdk
 run:
   web: java $JAVA_OPTS $WEB_PROFILE -jar build/libs/cloice-0.0.1-SNAPSHOT.war $JAR_OPTS
+  worker: java $JAVA_OPTS $WORKER_PROFILE -jar build/libs/cloice-0.0.1-SNAPSHOT.war $JAR_OPTS
