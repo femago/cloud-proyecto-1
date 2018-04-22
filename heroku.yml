@@ -3,4 +3,4 @@ build:
     - ffmpeg
     - openjdk-8-jdk
 run:
-  web: java $JAVA_OPTS -jar build/libs/cloice-0.0.1-SNAPSHOT.war -Dspring.profiles.active=$WEB_PROFILE $JAR_OPTS
+  web: java $JAVA_OPTS $WEB_PROFILE -jar build/libs/cloice-0.0.1-SNAPSHOT.war $JAR_OPTS
